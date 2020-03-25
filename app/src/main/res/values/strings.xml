@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Black Jack</string>
+    <string name="stand">Stand</string>
+    <string name="double_down">DD</string>
+    <string name="split">Split</string>
+    <string name="hit">Hit</string>
+    <string name="test">Test</string>
+
+    <string name="ace_club">ace_club</string>
+</resources>
