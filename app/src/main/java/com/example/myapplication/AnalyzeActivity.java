@@ -7,18 +7,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class SettingsActivity extends AppCompatActivity {
+public class AnalyzeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_analyze);
 
         ImageButton mainActivity = findViewById(R.id.imageHomeButton);
         mainActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage = new Intent(SettingsActivity.this, MainActivity.class);
+                Intent nextPage = new Intent(AnalyzeActivity.this, MainActivity.class);
                 startActivity(nextPage);
             }
         });

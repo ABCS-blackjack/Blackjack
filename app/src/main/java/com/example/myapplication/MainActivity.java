@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle (singleDeck.myDeck);
 
         //Bitmap currCard = ;
-
                 test.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,9 +48,14 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(nextPage);
                         }
                 });
+
+                ImageButton analyzeActivity = findViewById(R.id.imageAnalyzeButton);
+                analyzeActivity.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                                Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
+                                startActivity(nextPage);
+                        }
+                });
         }
-
-
-
-
 }
