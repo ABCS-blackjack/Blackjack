@@ -5,6 +5,12 @@
     <string name="split">Split</string>
     <string name="hit">Hit</string>
     <string name="test">Test</string>
+    <string name="setting_name">Setting</string>
+    <string name="setting1">Setting 1</string>
+    <string name="setting2">Setting 2</string>
+    <string name="setting3">Setting 3</string>
+    <string name="setting4">Setting 4</string>
+    <string name="setting5">Setting 5</string>
 
     <string name="ace_club">ace_club</string>
 </resources>
