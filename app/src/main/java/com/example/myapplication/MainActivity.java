@@ -23,39 +23,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final Deck singleDeck = new Deck();
+        Collections.shuffle (singleDeck.myDeck);
+        System.out.println(singleDeck.myDeck.size());
+
         final ImageView testImage = findViewById(R.id.playerCard);
         Button test = findViewById(R.id.buttonTest);
 
-        final Deck singleDeck = new Deck();
-        singleDeck.createDeck(1);
-        Collections.shuffle (singleDeck.myDeck);
-
-        //Bitmap currCard = ;
-                test.setOnClickListener(new View.OnClickListener() {
+        test.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                         //Drawable.createFromPath(singleDeck.getValue());
-                        testImage.setImageResource(R.drawable.nine_club);
+                        testImage.setImageResource(singleDeck.myDeck.get(0));
+                        singleDeck.myDeck.remove(0);
                 }
         });
 
+        ImageButton settingsActivity = findViewById(R.id.imageSettingButton);
+        settingsActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Intent nextPage = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(nextPage);
+                }
+        });
 
-                ImageButton settingsActivity = findViewById(R.id.imageSettingButton);
-                settingsActivity.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                Intent nextPage = new Intent(MainActivity.this, SettingsActivity.class);
-                                startActivity(nextPage);
-                        }
-                });
-
-                ImageButton analyzeActivity = findViewById(R.id.imageAnalyzeButton);
-                analyzeActivity.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                                Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
-                                startActivity(nextPage);
-                        }
-                });
+        ImageButton analyzeActivity = findViewById(R.id.imageAnalyzeButton);
+        analyzeActivity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
+                        startActivity(nextPage);
+                }
+        });
         }
 }

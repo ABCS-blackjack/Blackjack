@@ -2,28 +2,14 @@ package com.example.myapplication;
 
 public class Card {
 
-    private String value;
-    private String suit;
+    private int myCard;
 
-    public Card() {
-        value = "empty";
-        suit = "empty";
+    public Card() {}
+
+    public Card(int drawable) {
+        myCard = drawable;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public String getSuit() {
-        return suit;
-    }
-
-
-
-    public void createCard(String v, String s) {
-        value = v;
-        suit = s;
-
-    }
+    public int getCard() { return myCard; }
 
 }

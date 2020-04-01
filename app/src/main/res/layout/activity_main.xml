@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ace_club" />
+        android:src="@drawable/gray_back" />
 
     <ImageView
         android:id="@+id/dealerCard"
