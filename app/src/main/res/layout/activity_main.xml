@@ -8,14 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/buttonTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/test"
-        app:layout_constraintBottom_toTopOf="@id/playerCard"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
 
     <Button
         android:id="@+id/buttonHit"
@@ -73,7 +65,7 @@
         android:layout_width="127dp"
         android:layout_height="127dp"
         android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonTest"
+        app:layout_constraintBottom_toTopOf="@+id/playerCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -104,6 +96,6 @@
         android:layout_height="wrap_content"
         android:text="@string/player_count"
         app:layout_constraintLeft_toRightOf="@+id/playerCard"
-        app:layout_constraintTop_toBottomOf="@id/buttonTest"/>
+        app:layout_constraintBottom_toTopOf="@id/buttonDD"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
