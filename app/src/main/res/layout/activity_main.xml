@@ -61,6 +61,7 @@
         app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <ImageView
         android:id="@+id/playerCard2"
         android:layout_width="127dp"

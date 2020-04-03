@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         final Deck singleDeck = new Deck(1);
         Collections.shuffle(singleDeck.myDeck);
 
+
         final ImageView playerCard1 = findViewById(R.id.playerCard1);
         final ImageView dealerHand1 = findViewById(R.id.dealerCard1);
         final ImageView playerCard2 = findViewById(R.id.playerCard2);
