@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(singleDeck.myDeck.size());
 
         final ImageView testImage = findViewById(R.id.playerCard);
+        final ImageView playerCard2 = findViewById(R.id.playerCard2);
         Button test = findViewById(R.id.buttonTest);
 
         test.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                         //Drawable.createFromPath(singleDeck.getValue());
                         testImage.setImageResource(singleDeck.myDeck.get(0));
+                        singleDeck.myDeck.remove(0);
+                        playerCard2.setImageResource(singleDeck.myDeck.get(0));
                         singleDeck.myDeck.remove(0);
                 }
         });

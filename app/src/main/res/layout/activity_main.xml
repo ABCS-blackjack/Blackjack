@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE androidx.constraintlayout.widget.ConstraintLayout>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -61,11 +61,23 @@
         android:id="@+id/playerCard"
         android:layout_width="127dp"
         android:layout_height="127dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/gray_back"
         app:layout_constraintBottom_toTopOf="@+id/buttonStand"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/gray_back" />
+        app:layout_constraintHorizontal_bias="0.278"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/playerCard2"
+        android:layout_width="127dp"
+        android:layout_height="127dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/gray_back"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStand"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.725"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/dealerCard"
