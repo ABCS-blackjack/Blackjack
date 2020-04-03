@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE androidx.constraintlayout.widget.ConstraintLayout>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/myConstraintLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,21 +51,33 @@
 
 
     <ImageView
-        android:id="@+id/playerCard"
+        android:id="@+id/playerCard1"
         android:layout_width="127dp"
         android:layout_height="127dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/gray_back"
         app:layout_constraintBottom_toTopOf="@+id/buttonStand"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/gray_back" />
+        app:layout_constraintHorizontal_bias="0.278"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/dealerCard"
+        android:id="@+id/playerCard2"
+        android:layout_width="127dp"
+        android:layout_height="127dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/gray_back"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStand"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.725"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/dealerCard1"
         android:layout_width="127dp"
         android:layout_height="127dp"
         android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/playerCard"
+        app:layout_constraintBottom_toTopOf="@+id/playerCard1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -95,7 +107,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/player_count"
-        app:layout_constraintLeft_toRightOf="@+id/playerCard"
-        app:layout_constraintBottom_toTopOf="@id/buttonDD"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/playerCard1"/>
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

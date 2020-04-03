@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
         final Deck singleDeck = new Deck(1);
         Collections.shuffle(singleDeck.myDeck);
 
-        final ImageView playerHand = findViewById(R.id.playerCard);
-        final ImageView dealerHand = findViewById(R.id.dealerCard);
+        final ImageView playerCard1 = findViewById(R.id.playerCard1);
+        final ImageView dealerHand1 = findViewById(R.id.dealerCard1);
+        final ImageView playerCard2 = findViewById(R.id.playerCard2);
 
         final TextView playerCount = findViewById(R.id.playerCount);
 
@@ -35,20 +36,27 @@ public class MainActivity extends AppCompatActivity {
         Button standButton = findViewById(R.id.buttonStand);
         Button DDButton = findViewById(R.id.buttonDD);
         Button splitButton = findViewById(R.id.buttonSplit);
+        final Button startButton = findViewById(R.id.buttonStart);
 
         ImageButton settingsActivity = findViewById(R.id.imageSettingButton);
         ImageButton analyzeActivity = findViewById(R.id.imageAnalyzeButton);
 
 
-        hitButton.setOnClickListener(new View.OnClickListener() {
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                playerHand.setImageResource(singleDeck.myDeck.get(0).getDrawable());
+                playerCard1.setImageResource(singleDeck.myDeck.get(0).getDrawable());
                 playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
-                playerCount.setText(String.valueOf(playerValue));
                 singleDeck.myDeck.remove(0);
 
+                playerCard2.setImageResource(singleDeck.myDeck.get(0).getDrawable());
+                playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
+                singleDeck.myDeck.remove(0);
+
+                playerCount.setText(String.valueOf(playerValue));
+
+                startButton.setVisibility(View.GONE);
             }
         });
 
