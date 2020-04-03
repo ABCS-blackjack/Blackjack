@@ -2,14 +2,18 @@ package com.example.myapplication;
 
 public class Card {
 
-    private int myCard;
+    private Integer drawable;
+    private int value;
+    public Integer getDrawable() {return drawable;}
+    public Integer getValue() {return value;}
 
-    public Card() {}
 
-    public Card(int drawable) {
-        myCard = drawable;
+    public Card() {
     }
 
-    public int getCard() { return myCard; }
+    public Card(Integer drawable, int value) {
+        this.drawable = drawable;
+        this.value = value;
+    }
 
 }
