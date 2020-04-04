@@ -3,9 +3,8 @@ package com.example.myapplication;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class valuePopUp extends AppCompatActivity {
+public class DealerAI extends Deck {
 
-    public ImageView playerCount = findViewById(R.id.playerCard1);
 
 
 }

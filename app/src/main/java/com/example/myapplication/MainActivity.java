@@ -46,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 playerCard1.setImageResource(singleDeck.myDeck.get(0).getDrawable());
                 playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
+                singleDeck.myDeck.remove(0);
+
+                dealerHand1.setImageResource(singleDeck.myDeck.get(0).getDrawable());
                 singleDeck.myDeck.remove(0);
 
                 playerCard2.setImageResource(singleDeck.myDeck.get(0).getDrawable());
@@ -59,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
                 startButton.setVisibility(View.GONE);
             }
+        });
+
+        standButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               DealerAI(singleDeck);
+           }
         });
 
         settingsActivity.setOnClickListener(new View.OnClickListener() {
