@@ -28,8 +28,7 @@ public class Player extends Dealer {
         theDeck.myDeck.remove(0);
     };
 
-    public void playerStand(Dealer theDealer) {
-        theDealer.finishHand();
+    public void playerStand() {
     };
 
     public void playerDoubleDown() {};

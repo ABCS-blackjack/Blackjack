@@ -8,9 +8,11 @@ public class Dealer extends Activity {
 
     public int dealerHandValue;
     public Deck theDeck;
+    private Card dealerBottomCard;
 
     Dealer() {
         theDeck = new Deck();
+        dealerBottomCard = new Card();
         dealerHandValue = 0;
     };
 
@@ -22,7 +24,16 @@ public class Dealer extends Activity {
         theDeck.myDeck.remove(0);
     };
 
+    public void dealerHitBottom(ImageView v) {
+        dealerBottomCard = theDeck.myDeck.get(0);
+        dealerHandValue = dealerHandValue + theDeck.myDeck.get(0).getValue();
+        theDeck.myDeck.remove(0);
+    };
+
+    public Card getDealerBottomCard() {return dealerBottomCard;};
+
     public void finishHand() {
+
 
 
     };

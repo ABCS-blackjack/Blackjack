@@ -77,11 +77,14 @@ public class MainActivity extends AppCompatActivity {
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
 
+                dealer1.dealerHitBottom(dealerCard1);
+
+
                 startButton.setVisibility(View.GONE);
             }
         });
 
-        //Whe player uses hit
+        //When player uses hit
         hitButton.setOnClickListener(new View.OnClickListener() {
             int cardPosition = 2;
             @Override
@@ -123,10 +126,45 @@ public class MainActivity extends AppCompatActivity {
 
         //when the player clicks the STAND button
         standButton.setOnClickListener(new View.OnClickListener() {
+            int cardPosition = 2;
 
            @Override
            public void onClick(View v) {
-                player1.playerStand(dealer1);
+
+
+               player1.playerStand();
+               dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+               dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+               
+               while (dealer1.getDealerHandValue() < 17) {
+                   switch (cardPosition) {
+                       case 2:
+                           dealer1.dealerHit(dealerCard2);
+                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                           cardPosition++;
+                           break;
+                       case 3:
+                           dealer1.dealerHit(dealerCard3);
+                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                           cardPosition++;
+                           break;
+                       case 4:
+                           dealer1.dealerHit(dealerCard4);
+                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                           cardPosition++;
+                           break;
+                       case 5:
+                           dealer1.dealerHit(dealerCard5);
+                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                           cardPosition++;
+                           break;
+                       case 6:
+                           dealer1.dealerHit(dealerCard6);
+                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                           cardPosition++;
+                           break;
+                   }
+               }
            }
         });
 
