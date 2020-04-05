@@ -50,29 +50,6 @@
 
 
     <ImageView
-        android:id="@+id/playerCard1"
-        android:layout_width="127dp"
-        android:layout_height="127dp"
-        android:layout_marginBottom="4dp"
-        android:src="@drawable/gray_back"
-        app:layout_constraintBottom_toTopOf="@+id/buttonStand"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/playerCard2"
-        android:layout_width="127dp"
-        android:layout_height="127dp"
-        android:layout_marginBottom="4dp"
-        android:src="@drawable/gray_back"
-        app:layout_constraintBottom_toTopOf="@+id/buttonStand"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.725"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
         android:id="@+id/playerHitCard0"
         android:layout_width="127dp"
         android:layout_height="127dp"
@@ -101,34 +78,6 @@
 
 
     <ImageView
-        android:id="@+id/dealerCard1"
-        android:layout_width="127dp"
-        android:layout_height="127dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/playerCard1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.027"
-        app:srcCompat="@drawable/gray_back" />
-
-    <ImageView
-        android:id="@+id/dealerCard2"
-        android:layout_width="127dp"
-        android:layout_height="127dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/playerCard2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.725"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.027"
-        app:srcCompat="@drawable/gray_back" />
-
-
-
-    <ImageView
         android:id="@+id/newDealerCard"
         android:layout_width="127dp"
         android:layout_height="127dp"
@@ -153,7 +102,7 @@
         android:text="@string/dealer_count"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/dealerCard2" />
+        tools:layout_editor_absoluteY="60dp" />
 
     <TextView
         android:id="@+id/playerCount"
@@ -192,6 +141,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.example.myapplication.PlayerHandFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
+
+    <fragment
+        android:id="@+id/fragment2"
+        android:name="com.example.myapplication.DealerHandFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
