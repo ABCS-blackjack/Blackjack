@@ -73,6 +73,34 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
+        android:id="@+id/playerHitCard0"
+        android:layout_width="127dp"
+        android:layout_height="127dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/gray_back" />
+
+    <ImageView
+        android:id="@+id/playerHitCard1"
+        android:layout_width="127dp"
+        android:layout_height="127dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/gray_back" />
+
+    <ImageView
+        android:id="@+id/playerHitCard2"
+        android:layout_width="127dp"
+        android:layout_height="127dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/gray_back" />
+
+
+    <ImageView
         android:id="@+id/dealerCard1"
         android:layout_width="127dp"
         android:layout_height="127dp"

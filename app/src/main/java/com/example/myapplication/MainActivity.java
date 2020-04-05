@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     Integer playerValue = 0;
     Integer dealerValue = 0;
+    Integer hitValue = 0;
     Card dealerBottomCard;
 
     @Override
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView dealerCount = findViewById(R.id.dealerCount);
 
         Button hitButton = findViewById(R.id.buttonHit);
-        Button standButton = findViewById(R.id.buttonStand);
+        final Button standButton = findViewById(R.id.buttonStand);
         Button DDButton = findViewById(R.id.buttonDD);
         Button splitButton = findViewById(R.id.buttonSplit);
         final Button startButton = findViewById(R.id.buttonStart);
@@ -78,6 +79,57 @@ public class MainActivity extends AppCompatActivity {
 
 
                 startButton.setVisibility(View.GONE);
+            }
+        });
+
+        //Whe player uses hit
+        hitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (playerValue < 21) {
+                    if (hitValue == 0) {
+                        ImageView playerHitCard = findViewById(R.id.playerHitCard0);
+                        playerHitCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
+
+                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.movehit0);
+                        playerHitCard.startAnimation(animation1);
+
+                        playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
+                        playerCount.setText(String.valueOf(playerValue));
+
+                        singleDeck.myDeck.remove(0);
+                        hitValue++;
+                    } else if (hitValue == 1) {
+                        ImageView playerHitCard = findViewById(R.id.playerHitCard1);
+                        playerHitCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
+
+                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.movehit1);
+                        playerHitCard.startAnimation(animation1);
+
+                        playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
+                        playerCount.setText(String.valueOf(playerValue));
+
+                        singleDeck.myDeck.remove(0);
+                        hitValue++;
+                    } else {
+                        ImageView playerHitCard = findViewById(R.id.playerHitCard2);
+                        playerHitCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
+
+                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.movehit2);
+                        playerHitCard.startAnimation(animation1);
+
+                        playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
+                        playerCount.setText(String.valueOf(playerValue));
+
+                        singleDeck.myDeck.remove(0);
+                        hitValue++;
+                    }
+                }
+                playerCount.setText(String.valueOf(playerValue));
+                if (playerValue > 21) {
+                    standButton.performClick();
+                }
             }
         });
 
