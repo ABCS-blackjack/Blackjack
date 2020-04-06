@@ -12,13 +12,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +46,29 @@ public class MainActivity extends AppCompatActivity {
         final ImageView dealerCard4 = findViewById(R.id.dealerCardPos4);
         final ImageView dealerCard5 = findViewById(R.id.dealerCardPos5);
         final ImageView dealerCard6 = findViewById(R.id.dealerCardPos6);
-        
+
 
         //HAND VALUES
         final TextView playerCount = findViewById(R.id.playerCount);
         final TextView dealerCount = findViewById(R.id.dealerCount);
 
         //BUTTONS
-        Button hitButton = findViewById(R.id.buttonHit);
+        final Button hitButton = findViewById(R.id.buttonHit);
+        hitButton.setVisibility(View.GONE);
+
         final Button standButton = findViewById(R.id.buttonStand);
-        Button DDButton = findViewById(R.id.buttonDD);
-        Button splitButton = findViewById(R.id.buttonSplit);
+        standButton.setVisibility(View.GONE);
+
+        final Button doubleDownButton = findViewById(R.id.buttonDD);
+        doubleDownButton.setVisibility(View.GONE);
+
+        final Button splitButton = findViewById(R.id.buttonSplit);
+        splitButton.setVisibility(View.GONE);
+
         final Button startButton = findViewById(R.id.buttonStart);
+
+        final Button redealButton = findViewById(R.id.buttonRedeal);
+        redealButton.setVisibility(View.GONE);
 
         //OTHER ACTIVITIES
         ImageButton settingsActivity = findViewById(R.id.imageSettingButton);
@@ -71,56 +81,76 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 player1.playerHit(playerCard0);
                 player1.playerHit(playerCard1);
-                playerCount.setText(Integer.toString (player1.getPlayerHandValue()));
+                playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
 
                 dealer1.dealerHit(dealerCard0);
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
-
                 dealer1.dealerHitBottom(dealerCard1);
 
+                if (dealer1.dealerHas21()) {
+                    //fixme: determine if either side has black jack and end hand
+                }
 
                 startButton.setVisibility(View.GONE);
+                hitButton.setVisibility(View.VISIBLE);
+                standButton.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        // restart the board after a hand is finished
+        redealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //clearBoard();
+                player1.playerReset();
+                standButton.performClick();
             }
         });
 
         //When player uses hit
         hitButton.setOnClickListener(new View.OnClickListener() {
             int cardPosition = 2;
+
             @Override
             public void onClick(View v) {
 
-                    switch (cardPosition) {
-                        case 2:
-                            player1.playerHit(playerCard2);
-                            playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                            cardPosition++;
-                            break;
-                        case 3:
-                            player1.playerHit(playerCard3);
-                            playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                            cardPosition++;
-                            break;
-                        case 4:
-                            player1.playerHit(playerCard4);
-                            playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                            cardPosition++;
-                            break;
-                        case 5:
-                            player1.playerHit(playerCard5);
-                            playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                            cardPosition++;
-                            break;
-                        case 6:
-                            player1.playerHit(playerCard6);
-                            playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                            cardPosition++;
-                            break;
-                    }
-                if (player1.getPlayerHandValue() > 21) {
-                    //fixme: hand end
-                }
 
+                switch (cardPosition) {
+                    case 2:
+                        player1.playerHit(playerCard2);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 3:
+                        player1.playerHit(playerCard3);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 4:
+                        player1.playerHit(playerCard4);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 5:
+                        player1.playerHit(playerCard5);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 6:
+                        player1.playerHit(playerCard6);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                }
+                if (player1.isPlayerBust()) {
+                    dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+                    dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                    hitButton.setVisibility(View.GONE);
+                    standButton.setVisibility(View.GONE);
+                    redealButton.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -128,44 +158,47 @@ public class MainActivity extends AppCompatActivity {
         standButton.setOnClickListener(new View.OnClickListener() {
             int cardPosition = 2;
 
-           @Override
-           public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
+                hitButton.setVisibility(View.GONE);
+                standButton.setVisibility(View.GONE);
 
-               player1.playerStand();
-               dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
-               dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-               
-               while (dealer1.getDealerHandValue() < 17) {
-                   switch (cardPosition) {
-                       case 2:
-                           dealer1.dealerHit(dealerCard2);
-                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                           cardPosition++;
-                           break;
-                       case 3:
-                           dealer1.dealerHit(dealerCard3);
-                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                           cardPosition++;
-                           break;
-                       case 4:
-                           dealer1.dealerHit(dealerCard4);
-                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                           cardPosition++;
-                           break;
-                       case 5:
-                           dealer1.dealerHit(dealerCard5);
-                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                           cardPosition++;
-                           break;
-                       case 6:
-                           dealer1.dealerHit(dealerCard6);
-                           dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                           cardPosition++;
-                           break;
-                   }
-               }
-           }
+                dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+                dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+
+                while (dealer1.getDealerHandValue() < 17) {
+                    switch (cardPosition) {
+                        case 2:
+                            dealer1.dealerHit(dealerCard2);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 3:
+                            dealer1.dealerHit(dealerCard3);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 4:
+                            dealer1.dealerHit(dealerCard4);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 5:
+                            dealer1.dealerHit(dealerCard5);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 6:
+                            dealer1.dealerHit(dealerCard6);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                    }
+                }
+
+                redealButton.setVisibility(View.VISIBLE);
+            }
         });
 
         //when the player clicks the settings icon
@@ -185,5 +218,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(nextPage);
             }
         });
+
     }
-}
+    final void clearBoard() {
+        final ImageView playerCard0 = findViewById(R.id.playerCardPos0);
+    };
+};
+

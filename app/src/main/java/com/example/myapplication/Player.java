@@ -6,25 +6,24 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class Player extends Dealer {
+public class Player {
 
-    private int playerHandValue;
     public Deck playersHand;
     public Deck theDeck;
 
-
-
     Player() {
-
         playersHand = new Deck();
-        playerHandValue = 0;
     };
 
-    Player(Deck theDeck) { this.theDeck = theDeck; };
+    Player(Deck theDeck) {
+        this.theDeck = theDeck;
+        playersHand = new Deck();
+    };
 
     public void playerHit(ImageView v) {
+        playersHand.myDeck.add(theDeck.myDeck.get(0));
         v.setImageResource(theDeck.myDeck.get(0).getDrawable());
-        playerHandValue = playerHandValue + theDeck.myDeck.get(0).getValue();
+        //playerHandValue = playerHandValue + theDeck.myDeck.get(0).getValue();
         theDeck.myDeck.remove(0);
     };
 
@@ -35,6 +34,44 @@ public class Player extends Dealer {
 
     public void playerSplit() {};
 
-    public int getPlayerHandValue() {return playerHandValue;};
+    //get value of the players hand accounting for the value of aces being 1 or 11
+    public int getPlayerHandValue() {
+        int totalValue = 0;
+        boolean existAce = false;
+
+        for (Card i : playersHand.myDeck) {
+            if (i.getValue() == 1 && totalValue <= 10) {
+                totalValue = totalValue + 11;
+                existAce = true;
+            }
+            else if (i.getValue() == 1 && totalValue > 10) {
+                totalValue = totalValue + 1;
+            }
+            else {
+
+                if(existAce == true && (i.getValue() + totalValue <= 21)) {
+                    totalValue = totalValue + i.getValue();
+                }
+                else if(existAce == true && (i.getValue() + totalValue > 21)) {
+                    totalValue = totalValue + i.getValue() - 10;
+                    existAce = false;
+                }
+                else {
+                    totalValue = totalValue + i.getValue();
+                }
+            }
+        }
+
+        return totalValue;
+    };
+
+    public boolean isPlayerBust() {
+        if (this.getPlayerHandValue() <= 21) return false;
+        else return true;
+    };
+
+    public void playerReset() {
+        playersHand = new Deck();
+    };
 
 }
