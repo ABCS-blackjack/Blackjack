@@ -12,43 +12,65 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    Integer playerValue = 0;
-    Integer dealerValue = 0;
-    Integer hitValue = 0;
-    Card dealerBottomCard;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //CREATE OBJECTS
         final Deck singleDeck = new Deck(1);
         Collections.shuffle(singleDeck.myDeck);
+        final Player player1 = new Player(singleDeck);
+        final Dealer dealer1 = new Dealer(singleDeck);
+
+        //STARTING CARD PLACEMENTS
+        final ImageView playerCard0 = findViewById(R.id.playerCardPos0);
+        final ImageView playerCard1 = findViewById(R.id.playerCardPos1);
+        final ImageView playerCard2 = findViewById(R.id.playerCardPos2);
+        final ImageView playerCard3 = findViewById(R.id.playerCardPos3);
+        final ImageView playerCard4 = findViewById(R.id.playerCardPos4);
+        final ImageView playerCard5 = findViewById(R.id.playerCardPos5);
+        final ImageView playerCard6 = findViewById(R.id.playerCardPos6);
+
+        final ImageView dealerCard0 = findViewById(R.id.dealerCardPos0);
+        final ImageView dealerCard1 = findViewById(R.id.dealerCardPos1);
+        final ImageView dealerCard2 = findViewById(R.id.dealerCardPos2);
+        final ImageView dealerCard3 = findViewById(R.id.dealerCardPos3);
+        final ImageView dealerCard4 = findViewById(R.id.dealerCardPos4);
+        final ImageView dealerCard5 = findViewById(R.id.dealerCardPos5);
+        final ImageView dealerCard6 = findViewById(R.id.dealerCardPos6);
 
 
-        final ImageView playerCard1 = findViewById(R.id.playerCard1);
-        final ImageView playerCard2 = findViewById(R.id.playerCard2);
-        final ImageView dealerCard1 = findViewById(R.id.dealerCard1);
-        final ImageView dealerCard2 = findViewById(R.id.dealerCard2);
-
-
+        //HAND VALUES
         final TextView playerCount = findViewById(R.id.playerCount);
         final TextView dealerCount = findViewById(R.id.dealerCount);
 
-        Button hitButton = findViewById(R.id.buttonHit);
+        //BUTTONS
+        final Button hitButton = findViewById(R.id.buttonHit);
+        hitButton.setVisibility(View.GONE);
+
         final Button standButton = findViewById(R.id.buttonStand);
-        Button DDButton = findViewById(R.id.buttonDD);
-        Button splitButton = findViewById(R.id.buttonSplit);
+        standButton.setVisibility(View.GONE);
+
+        final Button doubleDownButton = findViewById(R.id.buttonDD);
+        doubleDownButton.setVisibility(View.GONE);
+
+        final Button splitButton = findViewById(R.id.buttonSplit);
+        splitButton.setVisibility(View.GONE);
+
         final Button startButton = findViewById(R.id.buttonStart);
 
+        final Button redealButton = findViewById(R.id.buttonRedeal);
+        redealButton.setVisibility(View.GONE);
+
+        //OTHER ACTIVITIES
         ImageButton settingsActivity = findViewById(R.id.imageSettingButton);
         ImageButton analyzeActivity = findViewById(R.id.imageAnalyzeButton);
 
@@ -57,107 +79,126 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                playerCard1.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-                playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
-                singleDeck.myDeck.remove(0);
+                player1.playerHit(playerCard0);
+                player1.playerHit(playerCard1);
+                playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
 
-                dealerCard1.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-                dealerValue = dealerValue + singleDeck.myDeck.get(0).getValue();
-                singleDeck.myDeck.remove(0);
+                dealer1.dealerHit(dealerCard0);
+                dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
-                playerCard2.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-                playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
-                singleDeck.myDeck.remove(0);
+                dealer1.dealerHitBottom(dealerCard1);
 
-                //Dealers face down card is not shown until player stands
-                dealerBottomCard = singleDeck.myDeck.get(0);
-                //dealercard2.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-                dealerValue = dealerValue + singleDeck.myDeck.get(0).getValue();
-                singleDeck.myDeck.remove(0);
-
-                playerCount.setText(String.valueOf(playerValue));
-
+                if (dealer1.dealerHas21()) {
+                    //fixme: determine if either side has black jack and end hand
+                }
 
                 startButton.setVisibility(View.GONE);
+                hitButton.setVisibility(View.VISIBLE);
+                standButton.setVisibility(View.VISIBLE);
+
             }
         });
 
-        //Whe player uses hit
+        // restart the board after a hand is finished
+        redealButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //clearBoard();
+                player1.playerReset();
+                standButton.performClick();
+            }
+        });
+
+        //When player uses hit
         hitButton.setOnClickListener(new View.OnClickListener() {
+            int cardPosition = 2;
+
             @Override
             public void onClick(View v) {
 
-                if (playerValue < 21) {
-                    if (hitValue == 0) {
-                        ImageView playerHitCard = findViewById(R.id.playerHitCard0);
-                        playerHitCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
 
-                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.movehit0);
-                        playerHitCard.startAnimation(animation1);
-
-                        playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
-                        playerCount.setText(String.valueOf(playerValue));
-
-                        singleDeck.myDeck.remove(0);
-                        hitValue++;
-                    } else if (hitValue == 1) {
-                        ImageView playerHitCard = findViewById(R.id.playerHitCard1);
-                        playerHitCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-
-                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.movehit1);
-                        playerHitCard.startAnimation(animation1);
-
-                        playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
-                        playerCount.setText(String.valueOf(playerValue));
-
-                        singleDeck.myDeck.remove(0);
-                        hitValue++;
-                    } else {
-                        ImageView playerHitCard = findViewById(R.id.playerHitCard2);
-                        playerHitCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-
-                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.movehit2);
-                        playerHitCard.startAnimation(animation1);
-
-                        playerValue = playerValue + singleDeck.myDeck.get(0).getValue();
-                        playerCount.setText(String.valueOf(playerValue));
-
-                        singleDeck.myDeck.remove(0);
-                        hitValue++;
-                    }
+                switch (cardPosition) {
+                    case 2:
+                        player1.playerHit(playerCard2);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 3:
+                        player1.playerHit(playerCard3);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 4:
+                        player1.playerHit(playerCard4);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 5:
+                        player1.playerHit(playerCard5);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
+                    case 6:
+                        player1.playerHit(playerCard6);
+                        playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
+                        cardPosition++;
+                        break;
                 }
-                playerCount.setText(String.valueOf(playerValue));
-                if (playerValue > 21) {
-                    standButton.performClick();
+                if (player1.isPlayerBust()) {
+                    dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+                    dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                    hitButton.setVisibility(View.GONE);
+                    standButton.setVisibility(View.GONE);
+                    redealButton.setVisibility(View.VISIBLE);
                 }
             }
         });
 
         //when the player clicks the STAND button
         standButton.setOnClickListener(new View.OnClickListener() {
+            int cardPosition = 2;
 
-           @Override
-           public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-               //turn the bottom card over
-               dealerCard2.setImageResource(dealerBottomCard.getDrawable());
+                hitButton.setVisibility(View.GONE);
+                standButton.setVisibility(View.GONE);
 
+                dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+                dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
-               while (dealerValue < 17) {
+                while (dealer1.getDealerHandValue() < 17) {
+                    switch (cardPosition) {
+                        case 2:
+                            dealer1.dealerHit(dealerCard2);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 3:
+                            dealer1.dealerHit(dealerCard3);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 4:
+                            dealer1.dealerHit(dealerCard4);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 5:
+                            dealer1.dealerHit(dealerCard5);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                        case 6:
+                            dealer1.dealerHit(dealerCard6);
+                            dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+                            cardPosition++;
+                            break;
+                    }
+                }
 
-                   ImageView newDealerCard = findViewById(R.id.newDealerCard);
-                   newDealerCard.setImageResource(singleDeck.myDeck.get(0).getDrawable());
-
-                   Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
-                   newDealerCard.startAnimation(animation1);
-
-                   dealerValue = dealerValue + singleDeck.myDeck.get(0).getValue();
-                   dealerCount.setText(String.valueOf(dealerValue));
-                   singleDeck.myDeck.remove(0);
-               }
-               dealerCount.setText(String.valueOf(dealerValue));
-
-           }
+                redealButton.setVisibility(View.VISIBLE);
+            }
         });
 
         //when the player clicks the settings icon
@@ -177,5 +218,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(nextPage);
             }
         });
+
     }
-}
+    final void clearBoard() {
+        final ImageView playerCard0 = findViewById(R.id.playerCardPos0);
+    };
+};
+

@@ -7,11 +7,13 @@ public class Deck extends Card {
 	public ArrayList<Card> myDeck;
 
         public Deck() {
+                myDeck = new ArrayList();
         }
 
         public Deck(int numOfDecks) {
                 for (int i = 0; i < numOfDecks; i++) {
                         myDeck = new ArrayList<>();
+
                         myDeck.add(new Card(R.drawable.ace_club, 1));
                         myDeck.add(new Card(R.drawable.two_club,2));
                         myDeck.add(new Card(R.drawable.three_club,3));
