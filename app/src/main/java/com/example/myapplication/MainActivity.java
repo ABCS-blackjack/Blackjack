@@ -14,10 +14,53 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import java.util.Collections;
 
-
 public class MainActivity extends AppCompatActivity {
+
+
+    //STARTING CARD PLACEMENTS
+    private ImageView playerCard0;
+    private ImageView playerCard1;
+    private ImageView playerCard2;
+    private ImageView playerCard3;
+    private ImageView playerCard4;
+    private ImageView playerCard5;
+    private ImageView playerCard6;
+
+    private ImageView dealerCard0;
+    private ImageView dealerCard1;
+    private ImageView dealerCard2;
+    private ImageView dealerCard3;
+    private ImageView dealerCard4;
+    private ImageView dealerCard5;
+    private ImageView dealerCard6;
+
+    //HAND VALUES
+    private TextView playerCount;
+    private TextView dealerCount;
+    private TextView shoeCardCount;
+
+    //BUTTONS
+    private Button hitButton;
+    private Button standButton;
+    private Button doubleDownButton;
+    private Button splitButton;
+    private Button startButton;
+    private Button redealButton;
+    private Button reshuffleButton;
+
+    //OTHER ACTIVITIES
+    private ImageButton settingsActivity;
+    private ImageButton analyzeActivity;
+
+    //DECK OBJECT
+    private Deck singleDeck;
+
+    //PLAYER AND DEALER OBJECT
+    private Player player1;
+    private Dealer dealer1;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -25,76 +68,80 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //CREATE OBJECTS
-        final Deck singleDeck = new Deck(1);
+        singleDeck = new Deck(1);
         Collections.shuffle(singleDeck.myDeck);
-        final Player player1 = new Player(singleDeck);
-        final Dealer dealer1 = new Dealer(singleDeck);
+        shoeCardCount = findViewById(R.id.shoeCount);
+        shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        player1 = new Player(singleDeck);
+        dealer1 = new Dealer(singleDeck);
 
-        //STARTING CARD PLACEMENTS
-        final ImageView playerCard0 = findViewById(R.id.playerCardPos0);
-        final ImageView playerCard1 = findViewById(R.id.playerCardPos1);
-        final ImageView playerCard2 = findViewById(R.id.playerCardPos2);
-        final ImageView playerCard3 = findViewById(R.id.playerCardPos3);
-        final ImageView playerCard4 = findViewById(R.id.playerCardPos4);
-        final ImageView playerCard5 = findViewById(R.id.playerCardPos5);
-        final ImageView playerCard6 = findViewById(R.id.playerCardPos6);
+        //SET CARD FACES
+        playerCard0 = findViewById(R.id.playerCardPos0);
+        playerCard1 = findViewById(R.id.playerCardPos1);
+        playerCard2 = findViewById(R.id.playerCardPos2);
+        playerCard3 = findViewById(R.id.playerCardPos3);
+        playerCard4 = findViewById(R.id.playerCardPos4);
+        playerCard5 = findViewById(R.id.playerCardPos5);
+        playerCard6 = findViewById(R.id.playerCardPos6);
 
-        final ImageView dealerCard0 = findViewById(R.id.dealerCardPos0);
-        final ImageView dealerCard1 = findViewById(R.id.dealerCardPos1);
-        final ImageView dealerCard2 = findViewById(R.id.dealerCardPos2);
-        final ImageView dealerCard3 = findViewById(R.id.dealerCardPos3);
-        final ImageView dealerCard4 = findViewById(R.id.dealerCardPos4);
-        final ImageView dealerCard5 = findViewById(R.id.dealerCardPos5);
-        final ImageView dealerCard6 = findViewById(R.id.dealerCardPos6);
+        dealerCard0 = findViewById(R.id.dealerCardPos0);
+        dealerCard1 = findViewById(R.id.dealerCardPos1);
+        dealerCard2 = findViewById(R.id.dealerCardPos2);
+        dealerCard3 = findViewById(R.id.dealerCardPos3);
+        dealerCard4 = findViewById(R.id.dealerCardPos4);
+        dealerCard5 = findViewById(R.id.dealerCardPos5);
+        dealerCard6 = findViewById(R.id.dealerCardPos6);
 
+        //SET CARD COUNT STARTING AT 0
+        playerCount = findViewById(R.id.playerCount);
+        dealerCount = findViewById(R.id.dealerCount);
 
-        //HAND VALUES
-        final TextView playerCount = findViewById(R.id.playerCount);
-        final TextView dealerCount = findViewById(R.id.dealerCount);
+        //SET BUTTONS
+        hitButton = findViewById(R.id.buttonHit);
+        standButton = findViewById(R.id.buttonStand);
+        doubleDownButton = findViewById(R.id.buttonDD);
+        splitButton = findViewById(R.id.buttonSplit);
+        startButton = findViewById(R.id.buttonStart);
+        redealButton = findViewById(R.id.buttonRedeal);
+        reshuffleButton = findViewById(R.id.buttonReshuffle);
 
-        //BUTTONS
-        final Button hitButton = findViewById(R.id.buttonHit);
-        hitButton.setVisibility(View.GONE);
-
-        final Button standButton = findViewById(R.id.buttonStand);
-        standButton.setVisibility(View.GONE);
-
-        final Button doubleDownButton = findViewById(R.id.buttonDD);
-        doubleDownButton.setVisibility(View.GONE);
-
-        final Button splitButton = findViewById(R.id.buttonSplit);
-        splitButton.setVisibility(View.GONE);
-
-        final Button startButton = findViewById(R.id.buttonStart);
-
-        final Button redealButton = findViewById(R.id.buttonRedeal);
-        redealButton.setVisibility(View.GONE);
-
-        //OTHER ACTIVITIES
-        ImageButton settingsActivity = findViewById(R.id.imageSettingButton);
-        ImageButton analyzeActivity = findViewById(R.id.imageAnalyzeButton);
-
+        //SET THE PAGE BUTTONS
+        settingsActivity = findViewById(R.id.imageSettingButton);
+        analyzeActivity = findViewById(R.id.imageAnalyzeButton);
 
         //when the player clicks the START button
         startButton.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
+
+                int playerLeft = singleDeck.myDeck.get(0).getValue();
+                int playerRight = singleDeck.myDeck.get(1).getValue();
+
                 player1.playerHit(playerCard0);
                 player1.playerHit(playerCard1);
                 playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
 
                 dealer1.dealerHit(dealerCard0);
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-
                 dealer1.dealerHitBottom(dealerCard1);
 
-                if (dealer1.dealerHas21()) {
-                    //fixme: determine if either side has black jack and end hand
-                }
+                if (dealer1.dealerHas21() || player1.playerHas21()) {
+                    endHand();
+                } else {
 
-                startButton.setVisibility(View.GONE);
-                hitButton.setVisibility(View.VISIBLE);
-                standButton.setVisibility(View.VISIBLE);
+                    startButton.setVisibility(View.GONE);
+                    hitButton.setVisibility(View.VISIBLE);
+                    standButton.setVisibility(View.VISIBLE);
+                    if (playerLeft == playerRight) {
+                        splitButton.setVisibility(View.VISIBLE);
+                    }
+                    if (player1.getPlayerHandValue() <= 11) {
+                        doubleDownButton.setVisibility(View.VISIBLE);
+                    }
+                }
+                shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
 
                 //SharedPreferences sharedPreferencesPro = getSharedPreferences(" ", MODE_PRIVATE);
                 SharedPreferences sharedPreferencesDD = getSharedPreferences(" ", MODE_PRIVATE);
@@ -117,15 +164,33 @@ public class MainActivity extends AppCompatActivity {
                     splitButton.setVisibility(View.GONE);
                 }
             }
+
         });
 
         // restart the board after a hand is finished
         redealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //clearBoard();
+                clearBoard();
                 player1.playerReset();
-                standButton.performClick();
+                dealer1.dealerReset();
+                redealButton.setVisibility(View.GONE);
+                startButton.performClick();
+            }
+        });
+
+        //reshuffle the deck
+        reshuffleButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                clearBoard();
+                player1.playerReset();
+                dealer1.dealerReset();
+                shoeReset();
+                reshuffleButton.setVisibility(View.GONE);
+                startButton.performClick();
+
             }
         });
 
@@ -136,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                doubleDownButton.setVisibility(View.GONE);
+                splitButton.setVisibility(View.GONE);
 
                 switch (cardPosition) {
                     case 2:
@@ -169,8 +236,17 @@ public class MainActivity extends AppCompatActivity {
                     dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
                     hitButton.setVisibility(View.GONE);
                     standButton.setVisibility(View.GONE);
-                    redealButton.setVisibility(View.VISIBLE);
+
+                    if (singleDeck.myDeck.size() < 20) {
+                        redealButton.setVisibility(View.GONE);
+                        reshuffleButton.setVisibility(View.VISIBLE);
+
+                    } else {
+                        redealButton.setVisibility(View.VISIBLE);
+                    }
                 }
+                shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+
             }
         });
 
@@ -183,6 +259,8 @@ public class MainActivity extends AppCompatActivity {
 
                 hitButton.setVisibility(View.GONE);
                 standButton.setVisibility(View.GONE);
+                splitButton.setVisibility(View.GONE);
+                doubleDownButton.setVisibility(View.GONE);
 
                 dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
@@ -217,7 +295,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                redealButton.setVisibility(View.VISIBLE);
+                if (singleDeck.myDeck.size() < 20) {
+                    redealButton.setVisibility(View.GONE);
+                    reshuffleButton.setVisibility(View.VISIBLE);
+
+                } else {
+                    redealButton.setVisibility(View.VISIBLE);
+                    shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                }
+
             }
         });
 
@@ -240,8 +326,50 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    final void clearBoard() {
-        final ImageView playerCard0 = findViewById(R.id.playerCardPos0);
-    };
+
+    private void shoeReset() {
+        //CREATE OBJECTS
+        singleDeck = new Deck(1);
+        Collections.shuffle(singleDeck.myDeck);
+        shoeCardCount = findViewById(R.id.shoeCount);
+        shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        player1 = new Player(singleDeck);
+        dealer1 = new Dealer(singleDeck);
+    }
+
+    private void clearBoard() {
+        //SET CARD FACES
+        playerCard0.setImageResource(R.drawable.gray_back);
+        playerCard1.setImageResource(R.drawable.gray_back);
+        playerCard2.setVisibility(View.GONE);
+        playerCard3.setVisibility(View.GONE);
+        playerCard4.setVisibility(View.GONE);
+        playerCard5.setVisibility(View.GONE);
+        playerCard6.setVisibility(View.GONE);
+
+        dealerCard0.setImageResource(R.drawable.gray_back);
+        dealerCard1.setImageResource(R.drawable.gray_back);
+        dealerCard2.setVisibility(View.GONE);
+        dealerCard3.setVisibility(View.GONE);
+        dealerCard4.setVisibility(View.GONE);
+        dealerCard5.setVisibility(View.GONE);
+        dealerCard6.setVisibility(View.GONE);
+
+        //SET CARD COUNT STARTING AT
+        playerCount.setText("0");
+        dealerCount.setText("0");
+    }
+
+    private void endHand() {
+        dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+        dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+
+        redealButton.setVisibility(View.VISIBLE);
+        startButton.setVisibility(View.GONE);
+        hitButton.setVisibility(View.GONE);
+        standButton.setVisibility(View.GONE);
+        splitButton.setVisibility(View.GONE);
+        doubleDownButton.setVisibility(View.GONE);
+    }
 };
 
