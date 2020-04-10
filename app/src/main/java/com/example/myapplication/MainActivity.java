@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,16 +12,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -96,6 +96,26 @@ public class MainActivity extends AppCompatActivity {
                 hitButton.setVisibility(View.VISIBLE);
                 standButton.setVisibility(View.VISIBLE);
 
+                //SharedPreferences sharedPreferencesPro = getSharedPreferences(" ", MODE_PRIVATE);
+                SharedPreferences sharedPreferencesDD = getSharedPreferences(" ", MODE_PRIVATE);
+                SharedPreferences sharedPreferencesSpl = getSharedPreferences(" ", MODE_PRIVATE);
+                //final boolean probVal = sharedPreferencesPro.getBoolean(getString(R.string.Probability), false);
+                final boolean DDVal = sharedPreferencesDD.getBoolean(getString(R.string.double_down), false);
+                final boolean SplVal = sharedPreferencesSpl.getBoolean(getString(R.string.split),false);
+
+                if((DDVal == true)&&(SplVal == true)){
+                    doubleDownButton.setVisibility(View.VISIBLE);
+                    splitButton.setVisibility(View.VISIBLE);
+                }else if((DDVal == true) && (SplVal == false)){
+                    doubleDownButton.setVisibility(View.VISIBLE);
+                    splitButton.setVisibility(View.INVISIBLE);
+                }else if((DDVal == false) && (SplVal == true)){
+                    doubleDownButton.setVisibility(View.INVISIBLE);
+                    splitButton.setVisibility(View.VISIBLE);
+                }else{
+                    doubleDownButton.setVisibility(View.INVISIBLE);
+                    splitButton.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
