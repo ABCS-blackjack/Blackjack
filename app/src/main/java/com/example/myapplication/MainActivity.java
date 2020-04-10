@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
     private Player player1;
     private Dealer dealer1;
 
+    //MISC
+    private int playerCardPos = 2;
+    private int dealerCardPos = 2;
+
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
 
         //When player uses hit
         hitButton.setOnClickListener(new View.OnClickListener() {
-            int cardPosition = 2;
 
             @Override
             public void onClick(View v) {
@@ -204,31 +209,31 @@ public class MainActivity extends AppCompatActivity {
                 doubleDownButton.setVisibility(View.GONE);
                 splitButton.setVisibility(View.GONE);
 
-                switch (cardPosition) {
+                switch (playerCardPos) {
                     case 2:
                         player1.playerHit(playerCard2);
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                        cardPosition++;
+                        playerCardPos++;
                         break;
                     case 3:
                         player1.playerHit(playerCard3);
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                        cardPosition++;
+                        playerCardPos++;
                         break;
                     case 4:
                         player1.playerHit(playerCard4);
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                        cardPosition++;
+                        playerCardPos++;
                         break;
                     case 5:
                         player1.playerHit(playerCard5);
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                        cardPosition++;
+                        playerCardPos++;
                         break;
                     case 6:
                         player1.playerHit(playerCard6);
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
-                        cardPosition++;
+                        playerCardPos++;
                         break;
                 }
                 if (player1.isPlayerBust()) {
@@ -252,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
 
         //when the player clicks the STAND button
         standButton.setOnClickListener(new View.OnClickListener() {
-            int cardPosition = 2;
 
             @Override
             public void onClick(View v) {
@@ -266,31 +270,31 @@ public class MainActivity extends AppCompatActivity {
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
                 while (dealer1.getDealerHandValue() < 17) {
-                    switch (cardPosition) {
+                    switch (dealerCardPos) {
                         case 2:
                             dealer1.dealerHit(dealerCard2);
                             dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                            cardPosition++;
+                            dealerCardPos++;
                             break;
                         case 3:
                             dealer1.dealerHit(dealerCard3);
                             dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                            cardPosition++;
+                            dealerCardPos++;
                             break;
                         case 4:
                             dealer1.dealerHit(dealerCard4);
                             dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                            cardPosition++;
+                            dealerCardPos++;
                             break;
                         case 5:
                             dealer1.dealerHit(dealerCard5);
                             dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                            cardPosition++;
+                            dealerCardPos++;
                             break;
                         case 6:
                             dealer1.dealerHit(dealerCard6);
                             dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                            cardPosition++;
+                            dealerCardPos++;
                             break;
                     }
                 }
@@ -355,6 +359,9 @@ public class MainActivity extends AppCompatActivity {
         dealerCard5.setVisibility(View.GONE);
         dealerCard6.setVisibility(View.GONE);
 
+
+        playerCardPos = 2;
+        dealerCardPos = 2;
         //SET CARD COUNT STARTING AT
         playerCount.setText("0");
         dealerCount.setText("0");
