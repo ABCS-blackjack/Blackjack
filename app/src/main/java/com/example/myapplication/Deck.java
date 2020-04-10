@@ -11,8 +11,8 @@ public class Deck extends Card {
         }
 
         public Deck(int numOfDecks) {
+                myDeck = new ArrayList<>();
                 for (int i = 0; i < numOfDecks; i++) {
-                        myDeck = new ArrayList<>();
 
                         myDeck.add(new Card(R.drawable.ace_club, 1));
                         myDeck.add(new Card(R.drawable.two_club,2));

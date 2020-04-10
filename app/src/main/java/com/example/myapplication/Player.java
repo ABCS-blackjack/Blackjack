@@ -23,7 +23,7 @@ public class Player {
     public void playerHit(ImageView v) {
         playersHand.myDeck.add(theDeck.myDeck.get(0));
         v.setImageResource(theDeck.myDeck.get(0).getDrawable());
-        //playerHandValue = playerHandValue + theDeck.myDeck.get(0).getValue();
+        v.setVisibility(View.VISIBLE);
         theDeck.myDeck.remove(0);
     };
 
@@ -73,5 +73,12 @@ public class Player {
     public void playerReset() {
         playersHand = new Deck();
     };
+
+    public boolean playerHas21() {
+        if (playersHand.myDeck.size() == 2 && getPlayerHandValue() == 21) {
+            return true;
+        }
+        return false;
+    }
 
 }
