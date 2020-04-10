@@ -67,18 +67,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dealer_count"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dealerFragment" />
 
     <TextView
         android:id="@+id/playerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/player_count"
-        app:layout_constraintBottom_toTopOf="@id/buttonStand"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/playerFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/imageSettingButton"
@@ -133,7 +133,7 @@
         android:visibility="gone"/>
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/playerFragment"
         android:name="com.example.myapplication.PlayerHandFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
 
     <fragment
-        android:id="@+id/fragment2"
+        android:id="@+id/dealerFragment"
         android:name="com.example.myapplication.DealerHandFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

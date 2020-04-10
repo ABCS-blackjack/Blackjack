@@ -108,8 +108,11 @@ public class MainActivity extends AppCompatActivity {
 
         //when the player clicks the START button
         startButton.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
+
                 int playerLeft = singleDeck.myDeck.get(0).getValue();
                 int playerRight = singleDeck.myDeck.get(1).getValue();
 
@@ -149,19 +152,19 @@ public class MainActivity extends AppCompatActivity {
                 player1.playerReset();
                 dealer1.dealerReset();
                 redealButton.setVisibility(View.GONE);
-                shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
                 startButton.performClick();
             }
         });
 
         //reshuffle the deck
         reshuffleButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 clearBoard();
                 player1.playerReset();
                 dealer1.dealerReset();
-                singleDeck = new Deck(1);
+                shoeReset();
                 reshuffleButton.setVisibility(View.GONE);
                 startButton.performClick();
 
@@ -211,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                     hitButton.setVisibility(View.GONE);
                     standButton.setVisibility(View.GONE);
 
-                    if (singleDeck.myDeck.size() < 48) {
+                    if (singleDeck.myDeck.size() < 20) {
                         redealButton.setVisibility(View.GONE);
                         reshuffleButton.setVisibility(View.VISIBLE);
 
@@ -269,14 +272,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                if (singleDeck.myDeck.size() < 48) {
+                if (singleDeck.myDeck.size() < 20) {
                     redealButton.setVisibility(View.GONE);
                     reshuffleButton.setVisibility(View.VISIBLE);
 
                 } else {
                     redealButton.setVisibility(View.VISIBLE);
+                    shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
                 }
-                shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
 
             }
         });
@@ -299,6 +302,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void shoeReset() {
+        //CREATE OBJECTS
+        singleDeck = new Deck(1);
+        Collections.shuffle(singleDeck.myDeck);
+        shoeCardCount = findViewById(R.id.shoeCount);
+        shoeCardCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        player1 = new Player(singleDeck);
+        dealer1 = new Dealer(singleDeck);
     }
 
     private void clearBoard() {
