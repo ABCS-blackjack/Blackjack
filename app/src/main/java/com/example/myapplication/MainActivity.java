@@ -108,13 +108,13 @@ public class MainActivity extends AppCompatActivity {
                     splitButton.setVisibility(View.VISIBLE);
                 }else if((DDVal == true) && (SplVal == false)){
                     doubleDownButton.setVisibility(View.VISIBLE);
-                    splitButton.setVisibility(View.INVISIBLE);
+                    splitButton.setVisibility(View.GONE);
                 }else if((DDVal == false) && (SplVal == true)){
-                    doubleDownButton.setVisibility(View.INVISIBLE);
+                    doubleDownButton.setVisibility(View.GONE);
                     splitButton.setVisibility(View.VISIBLE);
                 }else{
-                    doubleDownButton.setVisibility(View.INVISIBLE);
-                    splitButton.setVisibility(View.INVISIBLE);
+                    doubleDownButton.setVisibility(View.GONE);
+                    splitButton.setVisibility(View.GONE);
                 }
             }
         });
