@@ -11,53 +11,42 @@
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting1"
-        app:layout_constraintTop_toBottomOf="@id/setting_name"
+        android:layout_height="50dp"
+        android:text="@string/Probability"
+        android:checked="false"
         app:layout_constraintBottom_toTopOf="@+id/switch2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/setting_name" />
+
     <Switch
         android:id="@+id/switch2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting2"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        android:layout_height="50dp"
+        android:text="@string/double_down"
+        android:checked="false"
         app:layout_constraintBottom_toTopOf="@+id/switch3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        tools:text="Double Down" />
+
     <Switch
         android:id="@+id/switch3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting3"
+        android:layout_height="50dp"
+        android:text="@string/split"
+        android:checked="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch2"
-        app:layout_constraintBottom_toTopOf="@+id/switch4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <Switch
-        android:id="@+id/switch4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting4"
-        app:layout_constraintTop_toBottomOf="@+id/switch3"
-        app:layout_constraintBottom_toTopOf="@+id/switch5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <Switch
-        android:id="@+id/switch5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting5"
-        app:layout_constraintTop_toBottomOf="@+id/switch4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        tools:text="Split" />
 
     <TextView
         android:id="@+id/setting_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="35dp"
+        android:textSize="35sp"
         android:text="@string/setting_name"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +60,7 @@
         android:background="#00000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/home_button" />
+        app:srcCompat="@drawable/home_button"
+        android:contentDescription="@string/todo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
