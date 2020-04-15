@@ -5,79 +5,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayerHandFragment">
+    tools:context=".PlayerHandFragment2">
 
     <ImageView
-        android:id="@+id/playerCardPos0"
+        android:id="@+id/playerCardPos0_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toStartOf="@+id/playerCardPos1"
+        app:layout_constraintEnd_toStartOf="@+id/playerCardPos1_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/gray_back" />
+        app:srcCompat="@drawable/gray_back"
+        android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/playerCardPos1"
+        android:id="@+id/playerCardPos1_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toStartOf="@+id/playerCardPos2"
-        app:layout_constraintStart_toEndOf="@+id/playerCardPos0"
+        app:layout_constraintEnd_toStartOf="@+id/playerCardPos2_2"
+        app:layout_constraintStart_toEndOf="@+id/playerCardPos0_2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/gray_back" />
+        app:srcCompat="@drawable/gray_back"
+        android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/playerCardPos2"
+        android:id="@+id/playerCardPos2_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toStartOf="@+id/playerCardPos3"
-        app:layout_constraintStart_toEndOf="@+id/playerCardPos1"
+        app:layout_constraintEnd_toStartOf="@+id/playerCardPos3_2"
+        app:layout_constraintStart_toEndOf="@+id/playerCardPos1_2"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/playerCardPos3"
+        android:id="@+id/playerCardPos3_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintEnd_toStartOf="@+id/playerCardPos4"
-        app:layout_constraintStart_toEndOf="@+id/playerCardPos2"
+        app:layout_constraintEnd_toStartOf="@+id/playerCardPos4_2"
+        app:layout_constraintStart_toEndOf="@+id/playerCardPos2_2"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/playerCardPos4"
+        android:id="@+id/playerCardPos4_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintStart_toEndOf="@+id/playerCardPos3"
-        app:layout_constraintEnd_toStartOf="@+id/playerCardPos5"
+        app:layout_constraintStart_toEndOf="@+id/playerCardPos3_2"
+        app:layout_constraintEnd_toStartOf="@+id/playerCardPos5_2"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/playerCardPos5"
+        android:id="@+id/playerCardPos5_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintStart_toEndOf="@+id/playerCardPos4"
-        app:layout_constraintEnd_toStartOf="@id/playerCardPos6"
+        app:layout_constraintStart_toEndOf="@+id/playerCardPos4_2"
+        app:layout_constraintEnd_toStartOf="@id/playerCardPos6_2"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
     <ImageView
-        android:id="@+id/playerCardPos6"
+        android:id="@+id/playerCardPos6_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
-        app:layout_constraintStart_toEndOf="@+id/playerCardPos5"
+        app:layout_constraintStart_toEndOf="@+id/playerCardPos5_2"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/playerDoubleDownCard"
+        android:id="@+id/playerDoubleDownCard_2"
         android:layout_width="50dp"
         android:layout_height="100dp"
         android:adjustViewBounds="true"
         android:rotation="90"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/playerCardPos0"
-        app:layout_constraintEnd_toEndOf="@+id/playerCardPos1"
-        app:layout_constraintStart_toStartOf="@+id/playerCardPos0"
+        app:layout_constraintBottom_toBottomOf="@+id/playerCardPos0_2"
+        app:layout_constraintEnd_toEndOf="@+id/playerCardPos1_2"
+        app:layout_constraintStart_toStartOf="@+id/playerCardPos0_2"
         app:srcCompat="@drawable/gray_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

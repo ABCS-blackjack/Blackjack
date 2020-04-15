@@ -24,7 +24,13 @@ public class Dealer {
     }
 
 
-    public void dealerHit(ImageView v) {
+    public void dealerHit(ImageView v, AnalyzeCount count) {
+        if (theDeck.myDeck.get(0).getValue() <= 6 && theDeck.myDeck.get(0).getValue() >= 2) {
+            count.add();
+        }else if (theDeck.myDeck.get(0).getValue() >= 10 || theDeck.myDeck.get(0).getValue() == 1) {
+            count.sub();
+        }
+
         dealersHand.myDeck.add(theDeck.myDeck.get(0));
         v.setImageResource(theDeck.myDeck.get(0).getDrawable());
         v.setVisibility(View.VISIBLE);
