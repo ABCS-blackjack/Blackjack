@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     //HAND VALUES
     private TextView playerCount;
     private TextView dealerCount;
-    private TextView shoecurrentCount;
+    private TextView shoeCurrentCount;
     private TextView analyzeCount;
 
     //BUTTONS
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     //OTHER ACTIVITIES
     private ImageButton settingsActivity;
     private ImageButton analyzeActivity;
+    private ImageButton showShoeButton;
 
     //DECK OBJECT
     private Deck singleDeck;
@@ -68,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
     //MISC
     private int playerCardPos = 2;
     private int dealerCardPos = 2;
-    private int playerNumOfHands = 2;
     private AnalyzeCount currentCount = new AnalyzeCount(0);
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -79,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         //CREATE OBJECTS
         singleDeck = new Deck(1);
         Collections.shuffle(singleDeck.myDeck);
-        shoecurrentCount = findViewById(R.id.shoeCount);
-        shoecurrentCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        shoeCurrentCount = findViewById(R.id.shoeCount);
+        shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
         dealer1 = new Dealer(singleDeck);
 
@@ -108,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         playerCount = findViewById(R.id.playerCount);
         dealerCount = findViewById(R.id.dealerCount);
         analyzeCount = findViewById(R.id.analyzeCount);
+        analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
 
         //SET BUTTONS
         hitButton = findViewById(R.id.buttonHit);
@@ -121,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         //SET THE PAGE BUTTONS
         settingsActivity = findViewById(R.id.imageSettingButton);
         analyzeActivity = findViewById(R.id.imageAnalyzeButton);
+        showShoeButton = findViewById(R.id.gameShoeButton);
 
         //when the player clicks the START button
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -154,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
                         doubleDownButton.setVisibility(View.VISIBLE);
                     }
                 }
-                analyzeCount.setText(Integer.toString(currentCount.getValue()));
-                shoecurrentCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+                shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
 /*
                 //SharedPreferences sharedPreferencesPro = getSharedPreferences(" ", MODE_PRIVATE);
                 SharedPreferences sharedPreferencesDD = getSharedPreferences(" ", MODE_PRIVATE);
@@ -195,25 +201,25 @@ public class MainActivity extends AppCompatActivity {
                 switch (playerCardPos) {
                     case 2:
                         player1.playerHit(playerCard2, currentCount);
-                        analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                        analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
                         playerCardPos++;
                         break;
                     case 3:
                         player1.playerHit(playerCard3, currentCount);
-                        analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                        analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
                         playerCardPos++;
                         break;
                     case 4:
                         player1.playerHit(playerCard4, currentCount);
-                        analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                        analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
                         playerCardPos++;
                         break;
                     case 5:
                         player1.playerHit(playerCard5, currentCount);
-                        analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                        analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                         playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
                         playerCardPos++;
                         break;
@@ -229,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                     }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
                         currentCount.sub();
                     }
-                    analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                    analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                     dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
                     hitButton.setVisibility(View.GONE);
                     standButton.setVisibility(View.GONE);
@@ -242,8 +248,8 @@ public class MainActivity extends AppCompatActivity {
                         redealButton.setVisibility(View.VISIBLE);
                     }
                 }
-                analyzeCount.setText(Integer.toString(currentCount.getValue()));
-                shoecurrentCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+                shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
 
             }
         });
@@ -251,19 +257,8 @@ public class MainActivity extends AppCompatActivity {
         splitButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch(playerNumOfHands) {
-                    case 2:
-                        playerCard1.setVisibility(View.GONE);
-
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        standButton.performClick();
-                }
-                playerNumOfHands++;
+                Toast toast = Toast.makeText(getApplicationContext(), "Split functionality in development!", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
@@ -278,8 +273,8 @@ public class MainActivity extends AppCompatActivity {
                 doubleDownButton.setVisibility(View.GONE);
 
                 player1.playerDoubleDown(playerCardDown, currentCount);
-                analyzeCount.setText(Integer.toString(currentCount.getValue()));
-                shoecurrentCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+                shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
                 playerCount.setText(Integer.toString(player1.getPlayerHandValue()));
                 standButton.performClick();
 
@@ -299,12 +294,13 @@ public class MainActivity extends AppCompatActivity {
                 doubleDownButton.setVisibility(View.GONE);
 
                 dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+
                 if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
                     currentCount.add();
                 }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
                     currentCount.sub();
                 }
-                analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
                 while (dealer1.getDealerHandValue() < 17) {
@@ -342,9 +338,9 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     redealButton.setVisibility(View.VISIBLE);
-                    shoecurrentCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                    shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
                 }
-                analyzeCount.setText(Integer.toString(currentCount.getValue()));
+                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
 
             }
         });
@@ -376,6 +372,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        //shows what is left in the shoe when clicked
+        showShoeButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         //when the player clicks the settings icon
         settingsActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,10 +406,11 @@ public class MainActivity extends AppCompatActivity {
         //CREATE OBJECTS
         singleDeck = new Deck(1);
         Collections.shuffle(singleDeck.myDeck);
-        shoecurrentCount = findViewById(R.id.shoeCount);
-        shoecurrentCount.setText(Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        shoeCurrentCount = findViewById(R.id.shoeCount);
+        shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
         dealer1 = new Dealer(singleDeck);
+        currentCount = new AnalyzeCount(0);
     }
 
     private void clearBoard() {
@@ -443,7 +450,7 @@ public class MainActivity extends AppCompatActivity {
         }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
             currentCount.sub();
         }
-        analyzeCount.setText(Integer.toString(currentCount.getValue()));
+        analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
         redealButton.setVisibility(View.VISIBLE);
