@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Black Jack</string>
     <string name="stand">Stand</string>
-    <string name="double_down">DD</string>
+    <string name="double_down">Double Down</string>
     <string name="split">Split</string>
     <string name="hit">Hit</string>
     <string name="test">Test</string>

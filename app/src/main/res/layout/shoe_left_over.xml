@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:visibility="visible"
+    tools:context=".ShoeLeftOver">
+
+    <ImageView
+        android:id="@+id/twoCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/threeCount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/two_spade" />
+
+    <ImageView
+        android:id="@+id/threeCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/twoCount"
+        app:layout_constraintEnd_toStartOf="@id/fourCount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/three_spade" />
+
+    <ImageView
+        android:id="@+id/fourCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/threeCount"
+        app:layout_constraintEnd_toStartOf="@id/fiveCount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/four_spade" />
+
+    <ImageView
+        android:id="@+id/fiveCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/fourCount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/five_spade" />
+
+    <ImageView
+        android:id="@+id/sixCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/fiveCount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/six_spade" />
+
+    <ImageView
+        android:id="@+id/sevenCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/twoCount"
+        app:layout_constraintEnd_toStartOf="@id/fourCount"
+        app:layout_constraintTop_toBottomOf="@id/twoCount"
+        app:srcCompat="@drawable/seven_spade" />
+
+    <ImageView
+        android:id="@+id/eightCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/sevenCount"
+        app:layout_constraintEnd_toStartOf="@id/nineCount"
+        app:layout_constraintTop_toBottomOf="@id/fourCount"
+        app:srcCompat="@drawable/eight_spade" />
+
+    <ImageView
+        android:id="@+id/nineCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/eightCount"
+        app:layout_constraintTop_toBottomOf="@id/fiveCount"
+        app:srcCompat="@drawable/nine_spade" />
+
+    <ImageView
+        android:id="@+id/tenCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sevenCount"
+        app:srcCompat="@drawable/ten_spade" />
+
+    <ImageView
+        android:id="@+id/jackCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/tenCount"
+        app:layout_constraintEnd_toStartOf="@id/queenCount"
+        app:layout_constraintTop_toBottomOf="@id/sevenCount"
+        app:srcCompat="@drawable/jack_spade" />
+
+    <ImageView
+        android:id="@+id/queenCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/jackCount"
+        app:layout_constraintEnd_toStartOf="@id/kingCount"
+        app:layout_constraintTop_toBottomOf="@id/eightCount"
+        app:srcCompat="@drawable/queen_spade" />
+
+    <ImageView
+        android:id="@+id/kingCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/queenCount"
+        app:layout_constraintTop_toBottomOf="@id/nineCount"
+        app:srcCompat="@drawable/king_spade" />
+
+    <ImageView
+        android:id="@+id/aceCount"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/kingCount"
+        app:layout_constraintTop_toBottomOf="@id/nineCount"
+        app:srcCompat="@drawable/ace_spade" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
