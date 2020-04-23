@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 int playerLeft = singleDeck.myDeck.get(0).getValue();
                 int playerRight = singleDeck.myDeck.get(1).getValue();
 
-                pCard0 = singleDeck.myDeck.get(0).getDrawable();        //fixme
+                pCard0 = singleDeck.myDeck.get(0).getDrawable();
                 pCard1 = singleDeck.myDeck.get(1).getDrawable();
                 dCard0 = singleDeck.myDeck.get(2).getDrawable();
                 dCard1 = R.drawable.gray_back;
@@ -525,7 +525,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Toast.makeText(this, "on save", Toast.LENGTH_SHORT).show();
 
-        deckParcel = Parcels.wrap(singleDeck);
+        deckParcel = Parcels.wrap(singleDeck.myDeck);
         outState.putParcelable("theDeck", deckParcel);
 
         outState.putInt("pCard0", pCard0);
@@ -551,6 +551,20 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("splitButton", splitButton.getVisibility());
         outState.putInt("redealButton", redealButton.getVisibility());
         outState.putInt("reshuffleButton", reshuffleButton.getVisibility());
+        
+        outState.putInt("pCardVis2", playerCard2.getVisibility());
+        outState.putInt("pCardVis3", playerCard3.getVisibility());
+        outState.putInt("pCardVis4", playerCard4.getVisibility());
+        outState.putInt("pCardVis5", playerCard5.getVisibility());
+        outState.putInt("pCardVis6", playerCard6.getVisibility());
+
+        outState.putInt("dCardVis2", dealerCard2.getVisibility());
+        outState.putInt("dCardVis3", dealerCard3.getVisibility());
+        outState.putInt("dCardVis4", dealerCard4.getVisibility());
+        outState.putInt("dCardVis5", dealerCard5.getVisibility());
+        outState.putInt("dCardVis6", dealerCard6.getVisibility());
+
+
 
         outState.putString("playerCount", playerCount.getText().toString());
         outState.putString("dealerCount", dealerCount.getText().toString());
@@ -564,10 +578,8 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         Toast.makeText(this, "on restore", Toast.LENGTH_SHORT).show();
 
-        Parcelable drawableP1;
-
         deckParcel = savedInstanceState.getParcelable("theDeck");
-        singleDeck = Parcels.unwrap(deckParcel);
+        singleDeck.myDeck = Parcels.unwrap(deckParcel);
 
         pCard0 = savedInstanceState.getInt("pCard0");
         playerCard0.setImageResource(pCard0);
@@ -602,11 +614,22 @@ public class MainActivity extends AppCompatActivity {
         startButton.setVisibility(savedInstanceState.getInt("startButton"));
         hitButton.setVisibility(savedInstanceState.getInt("hitButton"));
         standButton.setVisibility(savedInstanceState.getInt("standButton"));
-        doubleDownButton.setVisibility(savedInstanceState.getInt("doubleDoubleButton"));
+        doubleDownButton.setVisibility(savedInstanceState.getInt("doubleDownButton"));
         splitButton.setVisibility(savedInstanceState.getInt("splitButton"));
         redealButton.setVisibility(savedInstanceState.getInt("redealButton"));
         reshuffleButton.setVisibility(savedInstanceState.getInt("reshuffleButton"));
+        
+        playerCard2.setVisibility(savedInstanceState.getInt("pCardVis2"));
+        playerCard3.setVisibility(savedInstanceState.getInt("pCardVis3"));
+        playerCard4.setVisibility(savedInstanceState.getInt("pCardVis4"));
+        playerCard5.setVisibility(savedInstanceState.getInt("pCardVis5"));
+        playerCard6.setVisibility(savedInstanceState.getInt("pCardVis6"));
 
+        dealerCard2.setVisibility(savedInstanceState.getInt("dCardVis2"));
+        dealerCard3.setVisibility(savedInstanceState.getInt("dCardVis3"));
+        dealerCard4.setVisibility(savedInstanceState.getInt("dCardVis4"));
+        dealerCard5.setVisibility(savedInstanceState.getInt("dCardVis5"));
+        dealerCard6.setVisibility(savedInstanceState.getInt("dCardVis6"));
 
         playerCount.setText(savedInstanceState.getString("playerCount"));
         dealerCount.setText(savedInstanceState.getString("dealerCount"));
