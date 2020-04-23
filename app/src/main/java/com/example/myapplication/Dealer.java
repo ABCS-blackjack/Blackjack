@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
+
 public class Dealer {
 
     private Deck theDeck;
@@ -16,7 +19,6 @@ public class Dealer {
         dealersHand = new Deck();
         dealerBottomCard = new Card();
     }
-
 
     Dealer(Deck theDeck) {
         this.theDeck = theDeck;

@@ -1,11 +1,16 @@
 package com.example.myapplication;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
+
 import java.util.ArrayList;
 
+@Parcel(Parcel.Serialization.BEAN)
 public class Deck extends Card {
 
     public ArrayList<Card> myDeck;
 
+    @ParcelConstructor
     public Deck() {
         myDeck = new ArrayList();
     }

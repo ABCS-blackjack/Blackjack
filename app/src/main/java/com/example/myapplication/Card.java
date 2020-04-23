@@ -1,5 +1,9 @@
 package com.example.myapplication;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
+
+@Parcel(Parcel.Serialization.BEAN)
 public class Card {
 
     private Integer drawable;
@@ -7,7 +11,7 @@ public class Card {
     public Integer getDrawable() {return drawable;}
     public Integer getValue() {return value;}
 
-
+    @ParcelConstructor
     public Card() {
     }
 
