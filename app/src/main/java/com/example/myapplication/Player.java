@@ -9,14 +9,15 @@ import android.widget.TextView;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
-
+@Parcel(Parcel.Serialization.BEAN)
 public class Player {
 
     public Deck playersHand;
     public Deck theDeck;
 
+    @ParcelConstructor
     Player() {
-
+        theDeck = new Deck();
         playersHand = new Deck();
     }
     Player(Deck theDeck) {

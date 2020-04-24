@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,10 +19,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.parceler.Parcel;
 import org.parceler.Parcels;
-
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
@@ -80,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
     //PARCELABLES
     Parcelable deckParcel;
+    Parcelable playerParcel;
+    Parcelable dealerParcel;
+    Parcelable countParcel;
 
     //SAVE
     int pCard0;
@@ -447,6 +446,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextPage = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(nextPage);
+                onStop();
+
             }
         });
 
@@ -456,6 +457,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
                 startActivity(nextPage);
+                onStop();
             }
         });
 
@@ -520,6 +522,7 @@ public class MainActivity extends AppCompatActivity {
         doubleDownButton.setVisibility(View.GONE);
     }
 
+    /**Saves values in current view to bundle outState*/
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -527,6 +530,15 @@ public class MainActivity extends AppCompatActivity {
 
         deckParcel = Parcels.wrap(singleDeck.myDeck);
         outState.putParcelable("theDeck", deckParcel);
+
+        playerParcel = Parcels.wrap(player1);
+        outState.putParcelable("thePlayer", playerParcel);
+
+        dealerParcel = Parcels.wrap(dealer1);
+        outState.putParcelable("theDealer", dealerParcel);
+
+        countParcel = Parcels.wrap(currentCount);
+        outState.putParcelable("trueCount", countParcel);
 
         outState.putInt("pCard0", pCard0);
         outState.putInt("pCard1", pCard1);
@@ -564,15 +576,13 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("dCardVis5", dealerCard5.getVisibility());
         outState.putInt("dCardVis6", dealerCard6.getVisibility());
 
-
-
         outState.putString("playerCount", playerCount.getText().toString());
         outState.putString("dealerCount", dealerCount.getText().toString());
         outState.putString("shoeCount", shoeCurrentCount.getText().toString());
         outState.putString("analyzeCount", analyzeCount.getText().toString());
-
     }
 
+    /**Restores values in current bundle to the current view*/
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -580,6 +590,15 @@ public class MainActivity extends AppCompatActivity {
 
         deckParcel = savedInstanceState.getParcelable("theDeck");
         singleDeck.myDeck = Parcels.unwrap(deckParcel);
+
+        playerParcel = savedInstanceState.getParcelable("thePlayer");
+        player1 = Parcels.unwrap(playerParcel);
+
+        dealerParcel = savedInstanceState.getParcelable("theDealer");
+        dealer1 = Parcels.unwrap(dealerParcel);
+
+        countParcel = savedInstanceState.getParcelable("trueCount");
+        currentCount = Parcels.unwrap(countParcel);
 
         pCard0 = savedInstanceState.getInt("pCard0");
         playerCard0.setImageResource(pCard0);
@@ -635,18 +654,20 @@ public class MainActivity extends AppCompatActivity {
         dealerCount.setText(savedInstanceState.getString("dealerCount"));
         shoeCurrentCount.setText(savedInstanceState.getString("shoeCount"));
         analyzeCount.setText(savedInstanceState.getString("analyzeCount"));
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "on resume", Toast.LENGTH_SHORT).show();
+        onStart();
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "on pause", Toast.LENGTH_SHORT).show();
     }
 };
 
-class AnalyzeCount {
-    public Integer value;
-    
-    AnalyzeCount(Integer value) {
-        this.value = value;
-    }
-    public void add() {value++;}
-    public void sub() {value--;}
-    public Integer getValue() {return value;}
-}
 
