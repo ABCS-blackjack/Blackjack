@@ -22,8 +22,10 @@ public class AnalyzeActivity extends AppCompatActivity {
         mainActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage = new Intent(AnalyzeActivity.this, MainActivity.class);
-                startActivity(nextPage);
+//                Intent nextPage = new Intent(AnalyzeActivity.this, MainActivity.class);
+//                startActivity(nextPage);
+                finish();
+                return;
             }
         });
 

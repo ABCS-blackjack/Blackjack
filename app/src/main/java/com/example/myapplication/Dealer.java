@@ -5,21 +5,26 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
+
+@Parcel(Parcel.Serialization.BEAN)
 public class Dealer {
 
     private Deck theDeck;
     private Deck dealersHand;
     private Card dealerBottomCard;
 
+    @ParcelConstructor
     Dealer() {
         theDeck = new Deck();
         dealersHand = new Deck();
         dealerBottomCard = new Card();
     }
 
-
     Dealer(Deck theDeck) {
         this.theDeck = theDeck;
+        dealerBottomCard = new Card();
         dealersHand = new Deck();
     }
 
@@ -40,7 +45,7 @@ public class Dealer {
 
     public void dealerHitBottom(ImageView v) {
         dealersHand.myDeck.add(theDeck.myDeck.get(0));
-        dealerBottomCard = theDeck.myDeck.get(0);
+        dealerBottomCard = dealersHand.myDeck.get(1);
         theDeck.myDeck.remove(0);
     }
 

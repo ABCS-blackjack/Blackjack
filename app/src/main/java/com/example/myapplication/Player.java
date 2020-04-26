@@ -6,28 +6,23 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
+
+@Parcel(Parcel.Serialization.BEAN)
 public class Player {
 
     public Deck playersHand;
-    public Deck playersSecondHand;
-    public Deck playersThirdHand;
-    public Deck playersFourthHand;
     public Deck theDeck;
 
+    @ParcelConstructor
     Player() {
-
+        theDeck = new Deck();
         playersHand = new Deck();
-        playersSecondHand = new Deck();
-        playersThirdHand = new Deck();
-        playersFourthHand = new Deck();
     }
-
     Player(Deck theDeck) {
         this.theDeck = theDeck;
         playersHand = new Deck();
-        playersSecondHand = new Deck();
-        playersThirdHand = new Deck();
-        playersFourthHand = new Deck();
     }
 
     public void playerHit(ImageView v, AnalyzeCount count) {
@@ -103,6 +98,13 @@ public class Player {
             return true;
         }
         return false;
+    }
+
+    public int getPlayerCard(int index) {
+        if (index >= playersHand.myDeck.size()) {
+            return 0;
+        }
+        return playersHand.myDeck.get(index).getDrawable();
     }
 
 }
