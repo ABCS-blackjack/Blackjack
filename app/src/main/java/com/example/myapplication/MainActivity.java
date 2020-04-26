@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -103,11 +104,20 @@ public class MainActivity extends AppCompatActivity {
     private int dealerCardPos = 2;
     private AnalyzeCount currentCount = new AnalyzeCount(0);
 
+    private Bundle mySaveState;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mySaveState = savedInstanceState;
+
+        if(savedInstanceState != null) {
+            Toast.makeText(this, "ss is not null", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "ss is null", Toast.LENGTH_SHORT).show();
+        }
 
         //CREATE OBJECTS
         singleDeck = new Deck(1);
@@ -116,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
         dealer1 = new Dealer(singleDeck);
+
 
         //SET CARD FACES
 
@@ -427,6 +438,7 @@ public class MainActivity extends AppCompatActivity {
                 reshuffleButton.setVisibility(View.GONE);
                 startButton.performClick();
 
+
             }
         });
 
@@ -446,8 +458,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextPage = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(nextPage);
-                onStop();
-
             }
         });
 
@@ -457,9 +467,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
                 startActivity(nextPage);
-                onStop();
             }
         });
+
 
     }
 
@@ -525,8 +535,7 @@ public class MainActivity extends AppCompatActivity {
     /**Saves values in current view to bundle outState*/
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Toast.makeText(this, "on save", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "saving state", Toast.LENGTH_SHORT).show();
 
         deckParcel = Parcels.wrap(singleDeck.myDeck);
         outState.putParcelable("theDeck", deckParcel);
@@ -539,6 +548,8 @@ public class MainActivity extends AppCompatActivity {
 
         countParcel = Parcels.wrap(currentCount);
         outState.putParcelable("trueCount", countParcel);
+
+        outState.putBundle("myBundle", mySaveState);
 
         outState.putInt("pCard0", pCard0);
         outState.putInt("pCard1", pCard1);
@@ -580,13 +591,16 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("dealerCount", dealerCount.getText().toString());
         outState.putString("shoeCount", shoeCurrentCount.getText().toString());
         outState.putString("analyzeCount", analyzeCount.getText().toString());
+
+        super.onSaveInstanceState(outState);
+
     }
 
     /**Restores values in current bundle to the current view*/
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Toast.makeText(this, "on restore", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "restoring state", Toast.LENGTH_SHORT).show();
 
         deckParcel = savedInstanceState.getParcelable("theDeck");
         singleDeck.myDeck = Parcels.unwrap(deckParcel);
@@ -659,14 +673,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "on resume", Toast.LENGTH_SHORT).show();
-        onStart();
-
+        Toast.makeText(this, "resuming state", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(this, "on pause", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "on pause", Toast.LENGTH_SHORT).show();
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Toast.makeText(this, "on start", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }
 };
 
