@@ -6,26 +6,44 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+@Entity
 @Parcel(Parcel.Serialization.BEAN)
 public class Player {
 
     public Deck playersHand;
     public Deck theDeck;
 
+    @PrimaryKey
+    public int playerID = 0;
+    @ColumnInfo
+    public int numGamesPlayed;
+    @ColumnInfo
+    public int numBusts;
+    @ColumnInfo
+    public int num21;
+    public int numHits;
+
     @ParcelConstructor
     Player() {
         theDeck = new Deck();
         playersHand = new Deck();
+        numHits = 0;
     }
     Player(Deck theDeck) {
         this.theDeck = theDeck;
         playersHand = new Deck();
+        numHits = 0;
     }
 
     public void playerHit(ImageView v, AnalyzeCount count) {
+        numHits++;
         if (theDeck.myDeck.get(0).getValue() <= 6 && theDeck.myDeck.get(0).getValue() >= 2) {
             count.add();
         }else if (theDeck.myDeck.get(0).getValue() >= 10 || theDeck.myDeck.get(0).getValue() == 1) {
@@ -91,6 +109,7 @@ public class Player {
 
     public void playerReset() {
         playersHand = new Deck();
+        numHits = 0;
     }
 
     public boolean playerHas21() {
