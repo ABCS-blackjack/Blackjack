@@ -64,14 +64,15 @@
 
     <ImageButton
         android:id="@+id/gameShoeButton"
-        android:layout_width="80dp"
-        android:layout_height="100dp"
-        android:background="@drawable/gray_back"
-        app:layout_constraintHorizontal_bias="0.2"
+        android:layout_width="400dp"
+        android:layout_height="250dp"
+        android:background="@drawable/shoe_vector"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonStart"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="14"
+        app:layout_constraintVertical_bias=".15"/>
 
     <ImageButton
         android:id="@+id/imageSettingButton"
@@ -178,16 +179,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Count Tracker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageAnalyzeButton" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/shoeCount" />
 
     <TextView
         android:id="@+id/shoeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Shoe Count"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/analyzeCount" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
         android:id="@+id/winLossTie"
@@ -195,7 +197,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:hint="Win/Loss"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shoeCount" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
