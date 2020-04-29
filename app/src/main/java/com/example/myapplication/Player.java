@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.Room;
 
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
@@ -17,17 +19,20 @@ import org.parceler.ParcelConstructor;
 @Parcel(Parcel.Serialization.BEAN)
 public class Player {
 
+    @Ignore
     public Deck playersHand;
+    @Ignore
     public Deck theDeck;
 
     @PrimaryKey
     public int playerID = 0;
     @ColumnInfo
-    public int numGamesPlayed;
+    public int numGames = 0;
     @ColumnInfo
-    public int numBusts;
+    public int numBusts = 0;
     @ColumnInfo
-    public int num21;
+    public int num21 = 0;
+    @Ignore
     public int numHits;
 
     @ParcelConstructor
@@ -41,6 +46,8 @@ public class Player {
         playersHand = new Deck();
         numHits = 0;
     }
+
+
 
     public void playerHit(ImageView v, AnalyzeCount count) {
         numHits++;
@@ -104,7 +111,10 @@ public class Player {
 
     public boolean isPlayerBust() {
         if (this.getPlayerHandValue() <= 21) return false;
-        else return true;
+        else{
+            numBusts++;
+            return true;
+        }
     }
 
     public void playerReset() {
@@ -114,6 +124,7 @@ public class Player {
 
     public boolean playerHas21() {
         if (playersHand.myDeck.size() == 2 && getPlayerHandValue() == 21) {
+            num21++;
             return true;
         }
         return false;

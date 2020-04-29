@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
+
 import android.animation.ObjectAnimator;
+import android.content.AsyncQueryHandler;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
@@ -23,6 +27,8 @@ import android.widget.Toast;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 import java.util.Collections;
+import java.util.concurrent.Executors;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -119,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "ss is null", Toast.LENGTH_SHORT).show();
         }
 
+        //CREATE DATABASE();
+        final BlackjackDatabase db = Room
+                .databaseBuilder(getApplicationContext(), BlackjackDatabase.class, "BlackjackDB")
+                .build();
+
         //CREATE OBJECTS
         singleDeck = new Deck(1);
         //Collections.shuffle(singleDeck.myDeck);
@@ -126,6 +137,15 @@ public class MainActivity extends AppCompatActivity {
         shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
         dealer1 = new Dealer(singleDeck);
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                if(db.playerDao().playerCheck() == 0) {
+                    db.playerDao().insertPlayer(player1);
+                }
+            }
+        });
+
 
 
         //SET CARD FACES
@@ -205,6 +225,12 @@ public class MainActivity extends AppCompatActivity {
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     endHand();
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.playerDao().updatePlayer(player1);
+                        }
+                    });
                 } else {
 
                     startButton.setVisibility(View.GONE);
@@ -523,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
         }
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
+        player1.numGames++;
 
         redealButton.setVisibility(View.VISIBLE);
         startButton.setVisibility(View.GONE);

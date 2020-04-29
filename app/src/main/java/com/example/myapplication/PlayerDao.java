@@ -9,8 +9,10 @@ import java.util.List;
 
 @Dao
 public interface PlayerDao {
-    @Query("SELECT numGamesPlayed FROM Player")
-    int getNumGamesPlayed();
+    @Query("SELECT count(playerID) FROM Player")
+    int playerCheck();
+    @Query("SELECT numGames FROM Player")
+    int getNumGames();
     @Query("SELECT numBusts FROM Player")
     int getNumBusts();
     @Query("SELECT num21 FROM Player")
