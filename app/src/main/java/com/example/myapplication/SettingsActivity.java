@@ -32,7 +32,6 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toast.makeText(this, "setting on create", Toast.LENGTH_SHORT).show();
 
         probabilitySwitch = findViewById(R.id.switch1);
         doubleDownSwitch = findViewById(R.id.switch2);
@@ -101,17 +100,17 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Toast.makeText(this, "setting restore", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "setting restore", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Toast.makeText(this, "setting save state", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "setting save state", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "setting resume", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "setting resume", Toast.LENGTH_SHORT).show();
         if (saveState != null) {
             probabilitySwitch.setChecked(saveState.getBoolean("probability"));
         }
@@ -119,7 +118,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(this, "setting pause", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "setting pause", Toast.LENGTH_SHORT).show();
 
     }
 }

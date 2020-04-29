@@ -10,17 +10,18 @@
     android:background="@drawable/felt_background">
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/saveButton"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
         android:text="Restart"
+        android:background="@drawable/gold_button"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
     <Button
         android:id="@+id/buttonHit"
         android:layout_width="70dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:text="@string/hit"
         android:background="@drawable/gold_button"
         android:visibility="gone"
@@ -30,8 +31,8 @@
 
     <Button
         android:id="@+id/buttonStand"
-        android:layout_width="90dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="55dp"
         android:text="@string/stand"
         android:background="@drawable/gold_button"
         android:visibility="gone"
@@ -42,7 +43,7 @@
     <Button
         android:id="@+id/buttonDD"
         android:layout_width="120dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:text="@string/double_down"
         android:background="@drawable/gold_button"
         android:visibility="gone"
@@ -53,7 +54,7 @@
     <Button
         android:id="@+id/buttonSplit"
         android:layout_width="90dp"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:text="@string/split"
         android:background="@drawable/gold_button"
         android:visibility="gone"
@@ -92,9 +93,10 @@
 
     <Button
         android:id="@+id/buttonStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
         android:text="@string/start"
+        android:background="@drawable/gold_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -102,10 +104,11 @@
 
     <Button
         android:id="@+id/buttonRedeal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
         android:text="@string/redeal"
         android:visibility="gone"
+        android:background="@drawable/gold_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -113,10 +116,11 @@
 
     <Button
         android:id="@+id/buttonReshuffle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="90dp"
+        android:layout_height="65dp"
         android:text="@string/reshuffle"
         android:visibility="gone"
+        android:background="@drawable/gold_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -157,7 +161,6 @@
         android:id="@+id/dealerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dealer_count"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dealerFragment" />
@@ -166,35 +169,43 @@
         android:id="@+id/playerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/player_count"
         app:layout_constraintBottom_toTopOf="@+id/playerFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+        android:id="@+id/analyzeCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Count Tracker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageAnalyzeButton" />
+
+    <TextView
         android:id="@+id/shoeCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:hint="Shoe Count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/analyzeCount" />
 
     <TextView
-        android:id="@+id/analyzeCount"
+        android:id="@+id/winLossTie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
+        android:text=""
+        android:hint="Win/Loss"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageAnalyzeButton" />
+        app:layout_constraintTop_toBottomOf="@+id/shoeCount" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cardsInShoeRV"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/dealerPopUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/dealerFragment"
+        app:layout_constraintBottom_toTopOf="@id/gameShoeButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

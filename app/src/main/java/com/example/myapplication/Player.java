@@ -14,6 +14,7 @@ public class Player {
 
     public Deck playersHand;
     public Deck theDeck;
+    public boolean isWinner;
 
     @ParcelConstructor
     Player() {
