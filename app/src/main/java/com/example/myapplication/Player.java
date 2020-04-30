@@ -30,7 +30,7 @@ public class Player {
     public int numGames = 0;
     @ColumnInfo
     public int numBusts = 0;
-    @ColumnInfo
+    @ColumnInfo()
     public int num21 = 0;
     @Ignore
     public int numHits;
@@ -112,19 +112,20 @@ public class Player {
     public boolean isPlayerBust() {
         if (this.getPlayerHandValue() <= 21) return false;
         else{
-            numBusts = numBusts + 1;
             return true;
         }
     }
 
     public void playerReset() {
-        playersHand = new Deck();
+        numGames++;
+        if (this.isPlayerBust()) numBusts++;
+        if (this.playerHas21()) num21++;
         numHits = 0;
+        playersHand = new Deck();
     }
 
     public boolean playerHas21() {
         if (playersHand.myDeck.size() == 2 && getPlayerHandValue() == 21) {
-            num21 = num21 + 1;
             return true;
         }
         return false;

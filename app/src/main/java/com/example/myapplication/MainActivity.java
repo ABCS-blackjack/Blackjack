@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "ss is null", Toast.LENGTH_SHORT).show();
         }
 
-        BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
+        final BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
 
         //CREATE OBJECTS
         singleDeck = new Deck(1);
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     endHand();
-                    BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+                    //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
                 } else {
 
                     startButton.setVisibility(View.GONE);
@@ -432,6 +432,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 clearBoard();
                 player1.playerReset();
+                db.playerDao().updatePlayer(player1);
                 dealer1.dealerReset();
                 redealButton.setVisibility(View.GONE);
                 startButton.performClick();
@@ -445,6 +446,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 clearBoard();
                 player1.playerReset();
+                db.playerDao().updatePlayer(player1);
                 dealer1.dealerReset();
                 shoeReset();
                 reshuffleButton.setVisibility(View.GONE);
@@ -527,6 +529,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void endHand() {
+        BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
             currentCount.add();
@@ -535,7 +538,6 @@ public class MainActivity extends AppCompatActivity {
         }
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-        player1.numGames = player1.numGames + 1;
 
         redealButton.setVisibility(View.VISIBLE);
         startButton.setVisibility(View.GONE);
