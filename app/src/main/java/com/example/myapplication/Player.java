@@ -30,9 +30,9 @@ public class Player {
     public int numGames = 0;
     @ColumnInfo
     public int numBusts = 0;
-    @ColumnInfo()
+    @ColumnInfo
     public int num21 = 0;
-    @Ignore
+    @ColumnInfo
     public int numHits;
 
     @ParcelConstructor

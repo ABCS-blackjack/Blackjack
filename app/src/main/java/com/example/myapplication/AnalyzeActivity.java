@@ -46,7 +46,10 @@ public class AnalyzeActivity extends AppCompatActivity {
             }
         });
 
+        int xValue = db.playerDao().getNumHits();
+
         GraphView graph = findViewById(R.id.probabilityGraph);
+
 
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, 0),
@@ -64,17 +67,25 @@ public class AnalyzeActivity extends AppCompatActivity {
                 new DataPoint(4, 28),
                 new DataPoint(5, 33),
         });
+        LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(new DataPoint[]{});
+        for (int i = 1; i <= xValue; i++) {
+            series3.appendData(new DataPoint(i, i*20), false, i, false);
+        }
+        series3.setDrawDataPoints(true);
 
         series1.setTitle("Bust %");
         series2.setTitle("21 %");
         series1.setColor(Color.RED);
         series2.setColor(Color.BLACK);
+        series3.setColor(Color.BLUE);
 
-        graph.addSeries(series1);
-        graph.addSeries(series2);
+        //graph.addSeries(series1);
+        //graph.addSeries(series2);
+        //if (!graph.getSeries().isEmpty()) graph.removeAllSeries();
+        graph.addSeries(series3);
 
         graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(5);
+        graph.getViewport().setMaxX(xValue);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
 

@@ -482,6 +482,7 @@ public class MainActivity extends AppCompatActivity {
         analyzeActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
                 Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
                 startActivity(nextPage);
             }
@@ -532,7 +533,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void endHand() {
-        BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+        //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
             currentCount.add();

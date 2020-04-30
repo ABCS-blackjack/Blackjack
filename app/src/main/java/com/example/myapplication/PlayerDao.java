@@ -20,6 +20,8 @@ public interface PlayerDao {
     int getNumBusts();
     @Query("SELECT num21 FROM Player")
     int getNum21();
+    @Query("SELECT numHits FROM Player")
+    int getNumHits();
     @Insert(onConflict = REPLACE)
     void insertPlayer(Player p);
     @Update(onConflict = REPLACE)
