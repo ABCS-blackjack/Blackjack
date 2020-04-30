@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "ss is null", Toast.LENGTH_SHORT).show();
         }
 
-        final BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
+        BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
 
         //CREATE OBJECTS
         singleDeck = new Deck(1);
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     endHand();
-                    db.playerDao().updatePlayer(player1);
+                    BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
                 } else {
 
                     startButton.setVisibility(View.GONE);
@@ -535,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
         }
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-        player1.numGames++;
+        player1.numGames = player1.numGames + 1;
 
         redealButton.setVisibility(View.VISIBLE);
         startButton.setVisibility(View.GONE);

@@ -8,16 +8,32 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
 public class AnalyzeActivity extends AppCompatActivity {
 
+    private TextView gamesText;
+    private TextView bustText;
+    private TextView num21Text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
+
+        gamesText = findViewById(R.id.gamesText);
+        bustText = findViewById(R.id.bustText);
+        num21Text = findViewById(R.id.num21Text);
+
+        BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
+
+        gamesText.setText("Games Played: " + Integer.toString(db.playerDao().getNumGames()));
+        bustText.setText("Busts: " + Integer.toString(db.playerDao().getNumBusts()));
+        num21Text.setText("Blackjacks: " + Integer.toString(db.playerDao().getNum21()));
 
         ImageButton mainActivity = findViewById(R.id.imageHomeButton);
         mainActivity.setOnClickListener(new View.OnClickListener() {

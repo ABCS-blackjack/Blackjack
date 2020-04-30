@@ -112,7 +112,7 @@ public class Player {
     public boolean isPlayerBust() {
         if (this.getPlayerHandValue() <= 21) return false;
         else{
-            numBusts++;
+            numBusts = numBusts + 1;
             return true;
         }
     }
@@ -124,7 +124,7 @@ public class Player {
 
     public boolean playerHas21() {
         if (playersHand.myDeck.size() == 2 && getPlayerHandValue() == 21) {
-            num21++;
+            num21 = num21 + 1;
             return true;
         }
         return false;
