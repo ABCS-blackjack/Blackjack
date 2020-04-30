@@ -220,7 +220,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     endHand();
-                    //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
                 } else {
 
                     startButton.setVisibility(View.GONE);

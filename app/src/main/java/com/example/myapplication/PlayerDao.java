@@ -20,12 +20,6 @@ public interface PlayerDao {
     int getNumBusts();
     @Query("SELECT num21 FROM Player")
     int getNum21();
-    @Query("UPDATE Player SET numGames = numGames+1 WHERE playerID = 0")
-    void incrementNumGames();
-    @Query("UPDATE Player SET numBusts = numBusts+1 WHERE playerID = 0")
-    void incrementNumBusts();
-    @Query("UPDATE Player SET num21 = num21+1 WHERE playerID = 0")
-    void incrementNum21();
     @Insert(onConflict = REPLACE)
     void insertPlayer(Player p);
     @Update(onConflict = REPLACE)

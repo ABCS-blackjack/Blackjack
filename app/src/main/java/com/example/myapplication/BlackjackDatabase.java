@@ -13,8 +13,8 @@ import java.util.concurrent.Executors;
 public abstract class BlackjackDatabase extends RoomDatabase {
     public abstract PlayerDao playerDao();
     private static volatile BlackjackDatabase instance;
-    private static final int numThreads = 4;
-    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(numThreads);
+    //private static final int numThreads = 4;
+    //static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(numThreads);
 
     static BlackjackDatabase getDatabase(final Context context) {
         if (instance == null) {
