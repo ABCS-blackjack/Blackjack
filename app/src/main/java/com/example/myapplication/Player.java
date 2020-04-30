@@ -119,7 +119,7 @@ public class Player {
     public void playerReset() {
         numGames++;
         if (this.isPlayerBust()) numBusts++;
-        if (this.playerHas21()) num21++;
+        if (this.getPlayerHandValue() == 21) num21++;
         numHits = 0;
         playersHand = new Deck();
     }

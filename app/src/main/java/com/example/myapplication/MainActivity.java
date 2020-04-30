@@ -136,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
         dealer1 = new Dealer(singleDeck);
         if (db.playerDao().playerCheck() == 0) {
             db.playerDao().insertPlayer(player1);
+        } else {
+            player1.numGames = db.playerDao().getNumGames();
+            player1.numBusts = db.playerDao().getNumBusts();
+            player1.num21 = db.playerDao().getNum21();
         }
 
 
