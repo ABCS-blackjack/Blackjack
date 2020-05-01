@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Player.class}, version = 2)
+@Database(entities = {Player.class}, version = 3)
 public abstract class BlackjackDatabase extends RoomDatabase {
     public abstract PlayerDao playerDao();
     private static volatile BlackjackDatabase instance;

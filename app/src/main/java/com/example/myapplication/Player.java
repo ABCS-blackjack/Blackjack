@@ -118,14 +118,14 @@ public class Player {
     }
 
     public void playerReset() {
+        numHits = 0;
         playersHand = new Deck();
     }
 
     public void playerUpdateData() {
         numGames++;
         if (isPlayerBust()) numBusts++;
-        if (playerHas21()) num21++;
-        //numHits = 0;
+        if (getPlayerHandValue() == 21) num21++;
     }
 
     public boolean playerHas21() {

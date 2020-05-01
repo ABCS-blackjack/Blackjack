@@ -563,7 +563,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+        //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
 
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
@@ -757,6 +757,6 @@ public class MainActivity extends AppCompatActivity {
         db.playerDao().updatePlayer(player1);
         //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }
-};
+}
 
 
