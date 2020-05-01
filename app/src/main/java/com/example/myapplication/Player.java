@@ -6,26 +6,51 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.Room;
+
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+@Entity
 @Parcel(Parcel.Serialization.BEAN)
 public class Player {
 
+    @Ignore
     public Deck playersHand;
+    @Ignore
     public Deck theDeck;
+
+    @PrimaryKey
+    public int playerID = 0;
+    @ColumnInfo
+    public int numGames = 0;
+    @ColumnInfo
+    public int numBusts = 0;
+    @ColumnInfo()
+    public int num21 = 0;
+    @Ignore
+    public int numHits;
 
     @ParcelConstructor
     Player() {
         theDeck = new Deck();
         playersHand = new Deck();
+        numHits = 0;
     }
     Player(Deck theDeck) {
         this.theDeck = theDeck;
         playersHand = new Deck();
+        numHits = 0;
     }
 
+
+
     public void playerHit(ImageView v, AnalyzeCount count) {
+        numHits++;
         if (theDeck.myDeck.get(0).getValue() <= 6 && theDeck.myDeck.get(0).getValue() >= 2) {
             count.add();
         }else if (theDeck.myDeck.get(0).getValue() >= 10 || theDeck.myDeck.get(0).getValue() == 1) {
@@ -86,11 +111,20 @@ public class Player {
 
     public boolean isPlayerBust() {
         if (this.getPlayerHandValue() <= 21) return false;
-        else return true;
+        else{
+            return true;
+        }
     }
 
     public void playerReset() {
         playersHand = new Deck();
+    }
+
+    public void playerUpdateData() {
+        numGames++;
+        if (isPlayerBust()) numBusts++;
+        if (playerHas21()) num21++;
+        //numHits = 0;
     }
 
     public boolean playerHas21() {

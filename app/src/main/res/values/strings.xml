@@ -16,6 +16,11 @@
     <string name="start">START</string>
     <string name="dealer_count" />
 
+    <string name="stats">STATS</string>
+    <string name="games">Hand Number: </string>
+    <string name="busts">Times Busted: </string>
+    <string name="num21">Blackjacks: </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="redeal">Redeal</string>
