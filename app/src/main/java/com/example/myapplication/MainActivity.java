@@ -5,11 +5,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
+
 import android.animation.ObjectAnimator;
+import android.content.AsyncQueryHandler;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
@@ -29,6 +33,8 @@ import com.jjoe64.graphview.RectD;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 import java.util.Collections;
+import java.util.concurrent.Executors;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -108,10 +114,14 @@ public class MainActivity extends AppCompatActivity {
     private int playerCardPos = 2;
     private int dealerCardPos = 2;
     private AnalyzeCount currentCount = new AnalyzeCount(0);
+
     private int win = 0, loss = 0;
     Snackbar popUp;
     private View myPopUp;
     
+
+    private BlackjackDatabase db;
+
     private Bundle mySaveState;
 
     @Override
@@ -127,6 +137,15 @@ public class MainActivity extends AppCompatActivity {
         shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
         dealer1 = new Dealer(singleDeck);
+
+        db = BlackjackDatabase.getDatabase(getApplicationContext());
+        if (db.playerDao().playerCheck() == 0) {
+            db.playerDao().insertPlayer(player1);
+        } else {
+            player1.numGames = db.playerDao().getNumGames();
+            player1.numBusts = db.playerDao().getNumBusts();
+            player1.num21 = db.playerDao().getNum21();
+        }
 
 
         //SET CARD FACES
@@ -164,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         redealButton = findViewById(R.id.buttonRedeal);
         reshuffleButton = findViewById(R.id.buttonReshuffle);
 
+
         myPopUp = findViewById(R.id.dealerPopUp);
 
         //SET THE PAGE BUTTONS
@@ -197,6 +217,8 @@ public class MainActivity extends AppCompatActivity {
                 dealer1.dealerHitBottom(dealerCard1);
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
+                    player1.playerUpdateData();
+                    db.playerDao().updatePlayer(player1);
                     endHand();
                 }else {
                     startButton.setVisibility(View.GONE);
@@ -285,8 +307,25 @@ public class MainActivity extends AppCompatActivity {
                 if (player1.isPlayerBust()) {
                     dCard1 = dealer1.getDealerBottomCard().getDrawable();
                     dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+
                     endHand();
                 }
+
+                   
+                    if (singleDeck.myDeck.size() < 20) {
+                        redealButton.setVisibility(View.GONE);
+                        reshuffleButton.setVisibility(View.VISIBLE);
+
+                    } else {
+                        redealButton.setVisibility(View.VISIBLE);
+                    }
+                    player1.playerUpdateData();
+                    db.playerDao().updatePlayer(player1);
+                }
+
+                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+                shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+
             }
 
         });
@@ -324,6 +363,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                player1.playerUpdateData();
+                db.playerDao().updatePlayer(player1);
 
                 hitButton.setVisibility(View.GONE);
                 standButton.setVisibility(View.GONE);
@@ -375,7 +417,14 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
-                endHand();
+
+                if (singleDeck.myDeck.size() < 20) {
+                    redealButton.setVisibility(View.GONE);
+                    reshuffleButton.setVisibility(View.VISIBLE);
+
+                } else {
+                      endHand();
+                }
             }
         });
 
@@ -443,9 +492,17 @@ public class MainActivity extends AppCompatActivity {
         singleDeck = new Deck(NUMBER_OF_DECKS);
         Collections.shuffle(singleDeck.myDeck);
         shoeCurrentCount = findViewById(R.id.shoeCount);
-        shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));
+
         player1 = new Player(singleDeck);
+        player1.numGames = db.playerDao().getNumGames();
+        player1.numBusts = db.playerDao().getNumBusts();
+        player1.num21 = db.playerDao().getNum21();
+        player1.playerUpdateData();
+        db.playerDao().updatePlayer(player1);
+
         dealer1 = new Dealer(singleDeck);
+
         currentCount = new AnalyzeCount(0);
     }
 
@@ -481,6 +538,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void endHand() {
 
+
         if(player1.getPlayerHandValue() > 21) {
             popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
             loss++;
@@ -505,6 +563,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+
+
+        BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
 
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
@@ -688,8 +749,14 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(this, "on start", Toast.LENGTH_SHORT).show();
     }
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        player1.num21 = 0;
+        player1.numBusts = 0;
+        player1.numGames = 0;
+        player1.numHits = 0;
+        player1.playerUpdateData();
+        db.playerDao().updatePlayer(player1);
         //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }
 };
