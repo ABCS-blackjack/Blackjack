@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     player1.playerUpdateData();
                     db.playerDao().updatePlayer(player1);
-                }
+
 
                 analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                 shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
