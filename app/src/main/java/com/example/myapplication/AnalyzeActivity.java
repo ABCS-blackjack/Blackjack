@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -31,8 +32,8 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
 
-        gamesText.setText("Games Played: " + Integer.toString(db.playerDao().getNumGames()));
-        bustText.setText("Busts: " + Integer.toString(db.playerDao().getNumBusts()));
+        gamesText.setText("Hand Number: " + Integer.toString(db.playerDao().getNumGames()));
+        bustText.setText("Times Busted: " + Integer.toString(db.playerDao().getNumBusts()));
         num21Text.setText("Blackjacks: " + Integer.toString(db.playerDao().getNum21()));
 
         ImageButton mainActivity = findViewById(R.id.imageHomeButton);
@@ -50,39 +51,27 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         GraphView graph = findViewById(R.id.probabilityGraph);
 
-
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 0),
-                new DataPoint(1, 2.5),
-                new DataPoint(2, 8),
-                new DataPoint(3, 22.75),
-                new DataPoint(4, 50.43),
-                new DataPoint(5, 92.7),
-        });
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 0),
-                new DataPoint(1, 2),
-                new DataPoint(2, 5),
-                new DataPoint(3, 12),
-                new DataPoint(4, 28),
-                new DataPoint(5, 33),
-        });
-        LineGraphSeries<DataPoint> series3 = new LineGraphSeries<>(new DataPoint[]{});
+        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
+        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
         for (int i = 1; i <= xValue; i++) {
-            series3.appendData(new DataPoint(i, i*20), false, i, false);
+            series1.appendData(new DataPoint(i, i * 20), false, i, false);
+            series2.appendData(new DataPoint(i, i * 10), false, i, false);
         }
-        series3.setDrawDataPoints(true);
 
         series1.setTitle("Bust %");
-        series2.setTitle("21 %");
         series1.setColor(Color.RED);
-        series2.setColor(Color.BLACK);
-        series3.setColor(Color.BLUE);
+        series1.setDrawDataPoints(true);
+        series1.setDataPointsRadius(15);
 
-        //graph.addSeries(series1);
-        //graph.addSeries(series2);
+        series2.setTitle("21 %");
+        series2.setColor(Color.BLACK);
+        series2.setDrawDataPoints(true);
+        series2.setDataPointsRadius(15);
+
+        graph.addSeries(series1);
+        graph.addSeries(series2);
         //if (!graph.getSeries().isEmpty()) graph.removeAllSeries();
-        graph.addSeries(series3);
+        //graph.addSeries(series3);
 
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(xValue);
@@ -91,5 +80,8 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
+
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
+        graph.getLegendRenderer().setVisible(true);
     }
 }
