@@ -14,6 +14,7 @@ public class Dealer {
     private Deck theDeck;
     private Deck dealersHand;
     private Card dealerBottomCard;
+    public boolean isWinner;
 
     @ParcelConstructor
     Dealer() {
@@ -60,7 +61,6 @@ public class Dealer {
 
 
     public void dealerReset() {
-
         dealersHand = new Deck();
         dealerBottomCard = new Card();
     }

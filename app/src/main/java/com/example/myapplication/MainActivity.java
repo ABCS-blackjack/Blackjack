@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
@@ -10,6 +11,7 @@ import android.animation.ObjectAnimator;
 import android.content.AsyncQueryHandler;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +26,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.jjoe64.graphview.RectD;
+
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 import java.util.Collections;
@@ -57,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView dealerCount;
     private TextView shoeCurrentCount;
     private TextView analyzeCount;
+    private TextView winLossTieCount;
 
     //BUTTONS
     private Button hitButton;
@@ -67,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
     private Button redealButton;
     private Button reshuffleButton;
 
-    private Button saveButton;
-
     //OTHER ACTIVITIES
     private ImageButton settingsActivity;
     private ImageButton analyzeActivity;
@@ -76,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     //DECK OBJECT
     private Deck singleDeck;
+    final private int NUMBER_OF_DECKS = 6;
 
     //PLAYER AND DEALER OBJECT
     private Player player1;
@@ -104,11 +110,17 @@ public class MainActivity extends AppCompatActivity {
     int dCard5;
     int dCard6;
 
-
     //MISC
     private int playerCardPos = 2;
     private int dealerCardPos = 2;
     private AnalyzeCount currentCount = new AnalyzeCount(0);
+
+    private int win = 0, loss = 0;
+    Snackbar popUp;
+    private View myPopUp;
+    
+
+    private BlackjackDatabase db;
 
     private Bundle mySaveState;
 
@@ -118,22 +130,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mySaveState = savedInstanceState;
 
-        if(savedInstanceState != null) {
-            Toast.makeText(this, "ss is not null", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(this, "ss is null", Toast.LENGTH_SHORT).show();
-        }
-
-        final BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
-
         //CREATE OBJECTS
-        singleDeck = new Deck(1);
-        //Collections.shuffle(singleDeck.myDeck);
+        singleDeck = new Deck(NUMBER_OF_DECKS);
+        Collections.shuffle(singleDeck.myDeck);
         shoeCurrentCount = findViewById(R.id.shoeCount);
         shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
         dealer1 = new Dealer(singleDeck);
+
+        db = BlackjackDatabase.getDatabase(getApplicationContext());
         if (db.playerDao().playerCheck() == 0) {
             db.playerDao().insertPlayer(player1);
         } else {
@@ -144,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         //SET CARD FACES
-
         playerCard0 = findViewById(R.id.playerCardPos0);
         playerCard1 = findViewById(R.id.playerCardPos1);
         playerCard2 = findViewById(R.id.playerCardPos2);
@@ -168,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         dealerCount = findViewById(R.id.dealerCount);
         analyzeCount = findViewById(R.id.analyzeCount);
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+        winLossTieCount = findViewById(R.id.winLossTie);
 
         //SET BUTTONS
         hitButton = findViewById(R.id.buttonHit);
@@ -178,15 +183,8 @@ public class MainActivity extends AppCompatActivity {
         redealButton = findViewById(R.id.buttonRedeal);
         reshuffleButton = findViewById(R.id.buttonReshuffle);
 
-        saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recreate();
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                startActivity(intent);
-            }
-        });
+
+        myPopUp = findViewById(R.id.dealerPopUp);
 
         //SET THE PAGE BUTTONS
         settingsActivity = findViewById(R.id.imageSettingButton);
@@ -219,9 +217,10 @@ public class MainActivity extends AppCompatActivity {
                 dealer1.dealerHitBottom(dealerCard1);
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
+                    player1.playerUpdateData();
+                    db.playerDao().updatePlayer(player1);
                     endHand();
-                } else {
-
+                }else {
                     startButton.setVisibility(View.GONE);
                     hitButton.setVisibility(View.VISIBLE);
                     standButton.setVisibility(View.VISIBLE);
@@ -308,16 +307,11 @@ public class MainActivity extends AppCompatActivity {
                 if (player1.isPlayerBust()) {
                     dCard1 = dealer1.getDealerBottomCard().getDrawable();
                     dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
-                    if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
-                        currentCount.add();
-                    }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
-                        currentCount.sub();
-                    }
-                    analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
-                    dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
-                    hitButton.setVisibility(View.GONE);
-                    standButton.setVisibility(View.GONE);
 
+                    endHand();
+                }
+
+                   
                     if (singleDeck.myDeck.size() < 20) {
                         redealButton.setVisibility(View.GONE);
                         reshuffleButton.setVisibility(View.VISIBLE);
@@ -325,11 +319,15 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         redealButton.setVisibility(View.VISIBLE);
                     }
-                }
+                    player1.playerUpdateData();
+                    db.playerDao().updatePlayer(player1);
+
+
                 analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
                 shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
 
             }
+
         });
 
         splitButton.setOnClickListener( new View.OnClickListener() {
@@ -365,6 +363,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                player1.playerUpdateData();
+                db.playerDao().updatePlayer(player1);
 
                 hitButton.setVisibility(View.GONE);
                 standButton.setVisibility(View.GONE);
@@ -416,16 +417,14 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
+
                 if (singleDeck.myDeck.size() < 20) {
                     redealButton.setVisibility(View.GONE);
                     reshuffleButton.setVisibility(View.VISIBLE);
 
                 } else {
-                    redealButton.setVisibility(View.VISIBLE);
-                    shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                      endHand();
                 }
-                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
-
             }
         });
 
@@ -435,7 +434,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 clearBoard();
                 player1.playerReset();
-                db.playerDao().updatePlayer(player1);
                 dealer1.dealerReset();
                 redealButton.setVisibility(View.GONE);
                 startButton.performClick();
@@ -449,7 +447,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 clearBoard();
                 player1.playerReset();
-                db.playerDao().updatePlayer(player1);
                 dealer1.dealerReset();
                 shoeReset();
                 reshuffleButton.setVisibility(View.GONE);
@@ -493,12 +490,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void shoeReset() {
         //CREATE OBJECTS
-        singleDeck = new Deck(1);
+        singleDeck = new Deck(NUMBER_OF_DECKS);
         Collections.shuffle(singleDeck.myDeck);
         shoeCurrentCount = findViewById(R.id.shoeCount);
-        shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+        shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));
+
         player1 = new Player(singleDeck);
+        player1.numGames = db.playerDao().getNumGames();
+        player1.numBusts = db.playerDao().getNumBusts();
+        player1.num21 = db.playerDao().getNum21();
+        player1.playerUpdateData();
+        db.playerDao().updatePlayer(player1);
+
         dealer1 = new Dealer(singleDeck);
+
         currentCount = new AnalyzeCount(0);
     }
 
@@ -533,13 +538,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void endHand() {
-        //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+        if(player1.getPlayerHandValue() > 21) {
+            popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
+            loss++;
+
+        }
+        else if (dealer1.getDealerHandValue() > 21) {
+            popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
+            win++;
+
+        }
+        else if (player1.getPlayerHandValue() == dealer1.getDealerHandValue()) {
+            popUp.make(myPopUp, "Tie", Snackbar.LENGTH_SHORT).show();
+
+        }
+        else {
+            if (player1.getPlayerHandValue() > dealer1.getDealerHandValue()) {
+                popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
+                win++;
+            } else {
+                popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
+                loss++;
+            }
+
+        }
+
+        BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
             currentCount.add();
         }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
             currentCount.sub();
         }
+        winLossTieCount.setText(" " +win + "/" + loss);
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
@@ -554,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
     /**Saves values in current view to bundle outState*/
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        Toast.makeText(this, "saving state", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "saving state", Toast.LENGTH_SHORT).show();
 
         deckParcel = Parcels.wrap(singleDeck.myDeck);
         outState.putParcelable("theDeck", deckParcel);
@@ -606,6 +638,9 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("dCardVis5", dealerCard5.getVisibility());
         outState.putInt("dCardVis6", dealerCard6.getVisibility());
 
+        outState.putInt("winCount", win);
+        outState.putInt("lossCount", loss);
+
         outState.putString("playerCount", playerCount.getText().toString());
         outState.putString("dealerCount", dealerCount.getText().toString());
         outState.putString("shoeCount", shoeCurrentCount.getText().toString());
@@ -619,7 +654,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Toast.makeText(this, "restoring state", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "restoring state", Toast.LENGTH_SHORT).show();
 
         deckParcel = savedInstanceState.getParcelable("theDeck");
         singleDeck.myDeck = Parcels.unwrap(deckParcel);
@@ -683,6 +718,12 @@ public class MainActivity extends AppCompatActivity {
         dealerCard5.setVisibility(savedInstanceState.getInt("dCardVis5"));
         dealerCard6.setVisibility(savedInstanceState.getInt("dCardVis6"));
 
+        win = savedInstanceState.getInt("win");
+        loss = savedInstanceState.getInt("loss");
+        winLossTieCount.setText(win + "/" + loss);
+
+
+
         playerCount.setText(savedInstanceState.getString("playerCount"));
         dealerCount.setText(savedInstanceState.getString("dealerCount"));
         shoeCurrentCount.setText(savedInstanceState.getString("shoeCount"));
@@ -692,7 +733,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "resuming state", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "resuming state", Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onPause() {
@@ -706,8 +747,14 @@ public class MainActivity extends AppCompatActivity {
         //Toast.makeText(this, "on start", Toast.LENGTH_SHORT).show();
     }
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
+        player1.num21 = 0;
+        player1.numBusts = 0;
+        player1.numGames = 0;
+        player1.numHits = 0;
+        player1.playerUpdateData();
+        db.playerDao().updatePlayer(player1);
         //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }
 };
