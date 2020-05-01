@@ -14,6 +14,7 @@ public class Dealer {
     private Deck theDeck;
     private Deck dealersHand;
     private Card dealerBottomCard;
+    public boolean isWinner;
 
     @ParcelConstructor
     Dealer() {

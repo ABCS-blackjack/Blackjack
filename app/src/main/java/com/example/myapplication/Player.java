@@ -23,6 +23,7 @@ public class Player {
     public Deck playersHand;
     @Ignore
     public Deck theDeck;
+    public boolean isWinner;
 
     @PrimaryKey
     public int playerID = 0;
