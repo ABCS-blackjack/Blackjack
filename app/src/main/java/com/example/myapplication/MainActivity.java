@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private Button redealButton;
     private Button reshuffleButton;
 
-    private Button saveButton;
-
     //OTHER ACTIVITIES
     private ImageButton settingsActivity;
     private ImageButton analyzeActivity;
@@ -106,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
     int dCard5;
     int dCard6;
 
-
     //MISC
     private int playerCardPos = 2;
     private int dealerCardPos = 2;
@@ -114,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private int win = 0, loss = 0;
     Snackbar popUp;
     private View myPopUp;
-
-
+    
     private Bundle mySaveState;
 
     @Override
@@ -169,16 +165,6 @@ public class MainActivity extends AppCompatActivity {
         reshuffleButton = findViewById(R.id.buttonReshuffle);
 
         myPopUp = findViewById(R.id.dealerPopUp);
-
-        saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recreate();
-//                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                startActivity(intent);
-            }
-        });
 
         //SET THE PAGE BUTTONS
         settingsActivity = findViewById(R.id.imageSettingButton);
