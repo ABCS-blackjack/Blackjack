@@ -60,7 +60,6 @@ public class Dealer {
 
 
     public void dealerReset() {
-
         dealersHand = new Deck();
         dealerBottomCard = new Card();
     }

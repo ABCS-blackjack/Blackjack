@@ -17,8 +17,8 @@
     <string name="dealer_count" />
 
     <string name="stats">STATS</string>
-    <string name="games">Games Played: </string>
-    <string name="busts">Busts: </string>
+    <string name="games">Hand Number: </string>
+    <string name="busts">Times Busted: </string>
     <string name="num21">Blackjacks: </string>
 
     <!-- TODO: Remove or change this placeholder text -->
