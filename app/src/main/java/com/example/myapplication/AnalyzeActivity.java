@@ -11,7 +11,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.LegendRenderer;
+import com.jjoe64.graphview.Viewport;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -47,13 +50,15 @@ public class AnalyzeActivity extends AppCompatActivity {
             }
         });
 
-        int xValue = db.playerDao().getNumHits();
-
         GraphView graph = findViewById(R.id.probabilityGraph);
+        int xValue = db.playerDao().getNumHits();
+        String[] xAxisLabels = new String[xValue];
 
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
         LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
+
         for (int i = 1; i <= xValue; i++) {
+            xAxisLabels[i-1] = Integer.toString(i);
             series1.appendData(new DataPoint(i, i * 20), false, i, false);
             series2.appendData(new DataPoint(i, i * 10), false, i, false);
         }
@@ -70,18 +75,29 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         graph.addSeries(series1);
         graph.addSeries(series2);
-        //if (!graph.getSeries().isEmpty()) graph.removeAllSeries();
-        //graph.addSeries(series3);
 
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(xValue);
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(100);
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        staticLabelsFormatter.setHorizontalLabels(xAxisLabels);
 
-        graph.getViewport().setXAxisBoundsManual(true);
-        graph.getViewport().setYAxisBoundsManual(true);
+        Viewport view = graph.getViewport();
+        if (xValue == 0) {
+            view.setMinX(0);
+        } else {
+            view.setMinX(1);
+        }
+        view.setMaxX(xValue);
+        view.setMinY(0);
+        view.setMaxY(100);
 
-        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
-        graph.getLegendRenderer().setVisible(true);
+        view.setXAxisBoundsManual(true);
+        view.setYAxisBoundsManual(true);
+
+        LegendRenderer legend = graph.getLegendRenderer();
+        legend.setAlign(LegendRenderer.LegendAlign.TOP);
+        legend.setVisible(true);
+
+        GridLabelRenderer label = graph.getGridLabelRenderer();
+        label.setNumHorizontalLabels(xValue);
+        label.setLabelFormatter(staticLabelsFormatter);
     }
 }
