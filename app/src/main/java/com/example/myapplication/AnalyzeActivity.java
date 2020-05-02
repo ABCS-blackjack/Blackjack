@@ -51,14 +51,14 @@ public class AnalyzeActivity extends AppCompatActivity {
         });
 
         GraphView graph = findViewById(R.id.probabilityGraph);
+        graph.setTitle("Probability");
+        graph.setTitleTextSize(65);
         int xValue = db.playerDao().getNumHits();
-        String[] xAxisLabels = new String[xValue];
 
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
         LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
 
         for (int i = 1; i <= xValue; i++) {
-            xAxisLabels[i-1] = Integer.toString(i);
             series1.appendData(new DataPoint(i, i * 20), false, i, false);
             series2.appendData(new DataPoint(i, i * 10), false, i, false);
         }
@@ -75,9 +75,6 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         graph.addSeries(series1);
         graph.addSeries(series2);
-
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        staticLabelsFormatter.setHorizontalLabels(xAxisLabels);
 
         Viewport view = graph.getViewport();
         if (xValue == 0) {
@@ -98,6 +95,5 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         GridLabelRenderer label = graph.getGridLabelRenderer();
         label.setNumHorizontalLabels(xValue);
-        label.setLabelFormatter(staticLabelsFormatter);
     }
 }
