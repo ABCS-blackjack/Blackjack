@@ -45,6 +45,7 @@ public class AnalyzeActivity extends AppCompatActivity {
         num21Text.setText("Blackjacks: " + Integer.toString(db.playerDao().getNum21()));
 
         ImageButton mainActivity = findViewById(R.id.imageHomeButton);
+        ImageButton refresh = findViewById(R.id.refresh);
         mainActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +53,12 @@ public class AnalyzeActivity extends AppCompatActivity {
 //                startActivity(nextPage);
                 finish();
                 return;
+            }
+        });
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //fixme: reset stats
             }
         });
 
@@ -68,12 +75,12 @@ public class AnalyzeActivity extends AppCompatActivity {
             series2.appendData(new DataPoint(i, i * 10), false, i, false);
         }
 
-        series1.setTitle("Bust %");
+        series1.setTitle("Bust %");     //fixme: incorporate player1.bustChance
         series1.setColor(Color.RED);
         series1.setDrawDataPoints(true);
         series1.setDataPointsRadius(15);
 
-        series2.setTitle("21 %");
+        series2.setTitle("21 %");       //fixme:incorporate dealer1.bustChance
         series2.setColor(Color.BLACK);
         series2.setDrawDataPoints(true);
         series2.setDataPointsRadius(15);

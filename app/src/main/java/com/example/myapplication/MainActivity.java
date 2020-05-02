@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView dealerCount;
     private TextView shoeCurrentCount;
     private TextView analyzeCount;
-    private TextView winLossTieCount;
+    private TextView bustChance;
 
     //BUTTONS
     private Button hitButton;
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         dealerCount = findViewById(R.id.dealerCount);
         analyzeCount = findViewById(R.id.analyzeCount);
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
-        winLossTieCount = findViewById(R.id.winLossTie);
+        bustChance = findViewById(R.id.bustChance);
 
         //SET BUTTONS
         hitButton = findViewById(R.id.buttonHit);
@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                     player1.playerUpdateData();
                     endHand();
                 }else {
+                    bustChance.setText(String.format("%.2f",player1.bustChance()));
                     startButton.setVisibility(View.GONE);
                     hitButton.setVisibility(View.VISIBLE);
                     standButton.setVisibility(View.VISIBLE);
@@ -310,23 +311,18 @@ public class MainActivity extends AppCompatActivity {
                     dCard1 = dealer1.getDealerBottomCard().getDrawable();
                     dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
                     player1.playerUpdateData();
-
                     endHand();
-                }
+                }else {
 
-                   
                     if (singleDeck.myDeck.size() < 20) {
                         redealButton.setVisibility(View.GONE);
                         reshuffleButton.setVisibility(View.VISIBLE);
-
-                    } else {
-                        redealButton.setVisibility(View.VISIBLE);
                     }
 
-
-                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
-                shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
-
+                    bustChance.setText(String.format("%.2f", player1.bustChance()));
+                    analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+                    shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                }
             }
 
         });
@@ -579,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
         }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
             currentCount.sub();
         }
-        winLossTieCount.setText(" " +win + "/" + loss);
+        bustChance.setText(String.format("%.2f",player1.bustChance()));
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
@@ -728,7 +724,7 @@ public class MainActivity extends AppCompatActivity {
 
         win = savedInstanceState.getInt("win");
         loss = savedInstanceState.getInt("loss");
-        winLossTieCount.setText(win + "/" + loss);
+        bustChance.setText(String.format("%.2f",player1.bustChance()));
 
 
 

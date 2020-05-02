@@ -142,4 +142,15 @@ public class Player {
         return playersHand.myDeck.get(index).getDrawable();
     }
 
+    public double bustChance () {
+        double chance = 0;
+        for (Card i : theDeck.myDeck) {
+            if ((getPlayerHandValue() + i.getValue()) > 21) {
+                chance++;
+            }
+        }
+        chance = chance/theDeck.myDeck.size();
+        return chance*100;
+    }
+
 }
