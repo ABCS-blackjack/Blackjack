@@ -23,20 +23,17 @@ public class Player {
     public Deck playersHand;
     @Ignore
     public Deck theDeck;
+    @Ignore
     public boolean isWinner;
 
     @PrimaryKey
     public int playerID = 0;
-    //@ColumnInfo
     public int numGames = 0;
     public int numWins = 0;
     public int numLosses = 0;
     public int numTies = 0;
-    //@ColumnInfo
     public int numBusts = 0;
-    //@ColumnInfo
     public int num21 = 0;
-    //@ColumnInfo
     public int numHits;
 
     @ParcelConstructor

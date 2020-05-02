@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     player1.playerUpdateData();
-                    db.playerDao().updatePlayer(player1);
                     endHand();
                 }else {
                     startButton.setVisibility(View.GONE);
@@ -310,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 if (player1.isPlayerBust()) {
                     dCard1 = dealer1.getDealerBottomCard().getDrawable();
                     dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
+                    player1.playerUpdateData();
 
                     endHand();
                 }
@@ -322,8 +322,6 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         redealButton.setVisibility(View.VISIBLE);
                     }
-                    player1.playerUpdateData();
-                    db.playerDao().updatePlayer(player1);
 
 
                 analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
@@ -368,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 player1.playerUpdateData();
-                db.playerDao().updatePlayer(player1);
 
                 hitButton.setVisibility(View.GONE);
                 standButton.setVisibility(View.GONE);
@@ -500,6 +497,9 @@ public class MainActivity extends AppCompatActivity {
 
         player1 = new Player(singleDeck);
         player1.numGames = db.playerDao().getNumGames();
+        player1.numWins = db.playerDao().getNumWins();
+        player1.numLosses = db.playerDao().getNumLosses();
+        player1.numTies = db.playerDao().getNumTies();
         player1.numBusts = db.playerDao().getNumBusts();
         player1.num21 = db.playerDao().getNum21();
         player1.playerUpdateData();
