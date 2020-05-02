@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Player.class}, version = 1)
+@Database(entities = {Player.class}, version = 5)
 public abstract class BlackjackDatabase extends RoomDatabase {
     public abstract PlayerDao playerDao();
     private static volatile BlackjackDatabase instance;
@@ -22,7 +22,7 @@ public abstract class BlackjackDatabase extends RoomDatabase {
                 if (instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
                             BlackjackDatabase.class, "BlackjackDB").allowMainThreadQueries()
-                            .build();
+                            .fallbackToDestructiveMigration().build();
                 }
             }
         }

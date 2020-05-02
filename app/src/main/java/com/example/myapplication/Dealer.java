@@ -100,5 +100,43 @@ public class Dealer {
         return false;
     }
 
+    public double bustChance() {
+        double chance = 0;
+
+        switch (dealersHand.myDeck.get(0).getValue()) {
+            case 2:
+                chance = 35.30;
+                break;
+            case 3:
+                chance = 37.56;
+                break;
+            case 4:
+                chance = 40.28;
+                break;
+            case 5:
+                chance = 42.89;
+                break;
+            case 6:
+                chance = 42.08;
+                break;
+            case 7:
+                chance = 25.99;
+                break;
+            case 8:
+                chance = 23.86;
+                break;
+            case 9:
+                chance = 23.34;
+                break;
+            case 10:
+                chance = 21.43;
+                break;
+            case 1:
+                chance = 11.65;
+                break;
+        }
+        return chance;
+    }
+
 
 }

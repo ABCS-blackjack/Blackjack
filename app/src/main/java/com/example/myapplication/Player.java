@@ -23,17 +23,17 @@ public class Player {
     public Deck playersHand;
     @Ignore
     public Deck theDeck;
+    @Ignore
     public boolean isWinner;
 
     @PrimaryKey
     public int playerID = 0;
-    @ColumnInfo
     public int numGames = 0;
-    @ColumnInfo
+    public int numWins = 0;
+    public int numLosses = 0;
+    public int numTies = 0;
     public int numBusts = 0;
-    @ColumnInfo()
     public int num21 = 0;
-    @Ignore
     public int numHits;
 
     @ParcelConstructor
@@ -118,14 +118,14 @@ public class Player {
     }
 
     public void playerReset() {
+        numHits = 0;
         playersHand = new Deck();
     }
 
     public void playerUpdateData() {
         numGames++;
         if (isPlayerBust()) numBusts++;
-        if (playerHas21()) num21++;
-        //numHits = 0;
+        if (getPlayerHandValue() == 21) num21++;
     }
 
     public boolean playerHas21() {
@@ -140,6 +140,17 @@ public class Player {
             return 0;
         }
         return playersHand.myDeck.get(index).getDrawable();
+    }
+
+    public double bustChance () {
+        double chance = 0;
+        for (Card i : theDeck.myDeck) {
+            if ((getPlayerHandValue() + i.getValue()) > 21) {
+                chance++;
+            }
+        }
+        chance = chance/theDeck.myDeck.size();
+        return chance*100;
     }
 
 }

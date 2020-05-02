@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView dealerCount;
     private TextView shoeCurrentCount;
     private TextView analyzeCount;
-    private TextView winLossTieCount;
+    private TextView bustChance;
 
     //BUTTONS
     private Button hitButton;
@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             db.playerDao().insertPlayer(player1);
         } else {
             player1.numGames = db.playerDao().getNumGames();
+            player1.numWins = db.playerDao().getNumWins();
+            player1.numLosses = db.playerDao().getNumLosses();
+            player1.numTies = db.playerDao().getNumTies();
             player1.numBusts = db.playerDao().getNumBusts();
             player1.num21 = db.playerDao().getNum21();
         }
@@ -172,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         dealerCount = findViewById(R.id.dealerCount);
         analyzeCount = findViewById(R.id.analyzeCount);
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
-        winLossTieCount = findViewById(R.id.winLossTie);
+        bustChance = findViewById(R.id.bustChance);
 
         //SET BUTTONS
         hitButton = findViewById(R.id.buttonHit);
@@ -218,9 +221,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     player1.playerUpdateData();
-                    db.playerDao().updatePlayer(player1);
                     endHand();
                 }else {
+                    bustChance.setText(String.format("%.2f",player1.bustChance()));
                     startButton.setVisibility(View.GONE);
                     hitButton.setVisibility(View.VISIBLE);
                     standButton.setVisibility(View.VISIBLE);
@@ -307,25 +310,19 @@ public class MainActivity extends AppCompatActivity {
                 if (player1.isPlayerBust()) {
                     dCard1 = dealer1.getDealerBottomCard().getDrawable();
                     dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
-
+                    player1.playerUpdateData();
                     endHand();
-                }
+                }else {
 
-                   
                     if (singleDeck.myDeck.size() < 20) {
                         redealButton.setVisibility(View.GONE);
                         reshuffleButton.setVisibility(View.VISIBLE);
-
-                    } else {
-                        redealButton.setVisibility(View.VISIBLE);
                     }
-                    player1.playerUpdateData();
-                    db.playerDao().updatePlayer(player1);
 
-
-                analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
-                shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
-
+                    bustChance.setText(String.format("%.2f", player1.bustChance()));
+                    analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
+                    shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
+                }
             }
 
         });
@@ -365,7 +362,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 player1.playerUpdateData();
-                db.playerDao().updatePlayer(player1);
 
                 hitButton.setVisibility(View.GONE);
                 standButton.setVisibility(View.GONE);
@@ -479,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
         analyzeActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
                 Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
                 startActivity(nextPage);
             }
@@ -496,6 +493,9 @@ public class MainActivity extends AppCompatActivity {
 
         player1 = new Player(singleDeck);
         player1.numGames = db.playerDao().getNumGames();
+        player1.numWins = db.playerDao().getNumWins();
+        player1.numLosses = db.playerDao().getNumLosses();
+        player1.numTies = db.playerDao().getNumTies();
         player1.numBusts = db.playerDao().getNumBusts();
         player1.num21 = db.playerDao().getNum21();
         player1.playerUpdateData();
@@ -537,35 +537,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void endHand() {
-
-
         if(player1.getPlayerHandValue() > 21) {
             popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
             loss++;
+            player1.numLosses++;
 
         }
         else if (dealer1.getDealerHandValue() > 21) {
             popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
             win++;
+            player1.numWins++;
 
         }
         else if (player1.getPlayerHandValue() == dealer1.getDealerHandValue()) {
             popUp.make(myPopUp, "Tie", Snackbar.LENGTH_SHORT).show();
+            player1.numTies++;
 
         }
         else {
             if (player1.getPlayerHandValue() > dealer1.getDealerHandValue()) {
                 popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
                 win++;
+                player1.numWins++;
             } else {
                 popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
                 loss++;
+                player1.numLosses++;
             }
 
         }
 
-
-        BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+        //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
 
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
@@ -573,7 +575,7 @@ public class MainActivity extends AppCompatActivity {
         }else if (dealer1.getDealerBottomCard().getValue() >= 10 || dealer1.getDealerBottomCard().getValue() == 1) {
             currentCount.sub();
         }
-        winLossTieCount.setText(" " +win + "/" + loss);
+        bustChance.setText(String.format("%.2f",player1.bustChance()));
         analyzeCount.setText("Count: " + Integer.toString(currentCount.getValue()));
         dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
 
@@ -722,7 +724,7 @@ public class MainActivity extends AppCompatActivity {
 
         win = savedInstanceState.getInt("win");
         loss = savedInstanceState.getInt("loss");
-        winLossTieCount.setText(win + "/" + loss);
+        bustChance.setText(String.format("%.2f",player1.bustChance()));
 
 
 
@@ -754,11 +756,14 @@ public class MainActivity extends AppCompatActivity {
         player1.num21 = 0;
         player1.numBusts = 0;
         player1.numGames = 0;
+        player1.numWins = 0;
+        player1.numLosses = 0;
+        player1.numTies = 0;
         player1.numHits = 0;
         player1.playerUpdateData();
         db.playerDao().updatePlayer(player1);
         //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }
-};
+}
 
 
