@@ -18,6 +18,7 @@
 
     <string name="stats">Stats</string>
     <string name="games">Hand Number: </string>
+    <string name="record">Record (W-L-T): </string>
     <string name="busts">Times Busted: </string>
     <string name="num21">Blackjacks: </string>
 

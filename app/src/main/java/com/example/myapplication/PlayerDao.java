@@ -16,6 +16,12 @@ public interface PlayerDao {
     int playerCheck();
     @Query("SELECT numGames FROM Player")
     int getNumGames();
+    @Query("SELECT numWins FROM Player")
+    int getNumWins();
+    @Query("SELECT numLosses FROM Player")
+    int getNumLosses();
+    @Query("SELECT numTies FROM Player")
+    int getNumTies();
     @Query("SELECT numBusts FROM Player")
     int getNumBusts();
     @Query("SELECT num21 FROM Player")

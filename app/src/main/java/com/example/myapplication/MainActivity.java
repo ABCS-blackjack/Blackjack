@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity {
             db.playerDao().insertPlayer(player1);
         } else {
             player1.numGames = db.playerDao().getNumGames();
+            player1.numWins = db.playerDao().getNumWins();
+            player1.numLosses = db.playerDao().getNumLosses();
+            player1.numTies = db.playerDao().getNumTies();
             player1.numBusts = db.playerDao().getNumBusts();
             player1.num21 = db.playerDao().getNum21();
         }
@@ -541,24 +544,29 @@ public class MainActivity extends AppCompatActivity {
         if(player1.getPlayerHandValue() > 21) {
             popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
             loss++;
+            player1.numLosses++;
 
         }
         else if (dealer1.getDealerHandValue() > 21) {
             popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
             win++;
+            player1.numWins++;
 
         }
         else if (player1.getPlayerHandValue() == dealer1.getDealerHandValue()) {
             popUp.make(myPopUp, "Tie", Snackbar.LENGTH_SHORT).show();
+            player1.numTies++;
 
         }
         else {
             if (player1.getPlayerHandValue() > dealer1.getDealerHandValue()) {
                 popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
                 win++;
+                player1.numWins++;
             } else {
                 popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
                 loss++;
+                player1.numLosses++;
             }
 
         }
@@ -752,6 +760,9 @@ public class MainActivity extends AppCompatActivity {
         player1.num21 = 0;
         player1.numBusts = 0;
         player1.numGames = 0;
+        player1.numWins = 0;
+        player1.numLosses = 0;
+        player1.numTies = 0;
         player1.numHits = 0;
         player1.playerUpdateData();
         db.playerDao().updatePlayer(player1);

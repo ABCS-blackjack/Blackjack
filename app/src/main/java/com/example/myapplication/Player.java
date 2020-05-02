@@ -27,13 +27,16 @@ public class Player {
 
     @PrimaryKey
     public int playerID = 0;
-    @ColumnInfo
+    //@ColumnInfo
     public int numGames = 0;
-    @ColumnInfo
+    public int numWins = 0;
+    public int numLosses = 0;
+    public int numTies = 0;
+    //@ColumnInfo
     public int numBusts = 0;
-    @ColumnInfo
+    //@ColumnInfo
     public int num21 = 0;
-    @ColumnInfo
+    //@ColumnInfo
     public int numHits;
 
     @ParcelConstructor

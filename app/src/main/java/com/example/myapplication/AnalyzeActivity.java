@@ -21,6 +21,7 @@ import com.jjoe64.graphview.series.DataPoint;
 public class AnalyzeActivity extends AppCompatActivity {
 
     private TextView gamesText;
+    private TextView recordText;
     private TextView bustText;
     private TextView num21Text;
 
@@ -30,12 +31,16 @@ public class AnalyzeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_analyze);
 
         gamesText = findViewById(R.id.gamesText);
+        recordText = findViewById(R.id.recordText);
         bustText = findViewById(R.id.bustText);
         num21Text = findViewById(R.id.num21Text);
 
         BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
 
         gamesText.setText("Hand Number: " + Integer.toString(db.playerDao().getNumGames()));
+        recordText.setText("Record (W-L-T): " + Integer.toString(db.playerDao().getNumWins()) +
+                "-" + Integer.toString(db.playerDao().getNumLosses()) +
+                "-" + Integer.toString(db.playerDao().getNumTies()));
         bustText.setText("Times Busted: " + Integer.toString(db.playerDao().getNumBusts()));
         num21Text.setText("Blackjacks: " + Integer.toString(db.playerDao().getNum21()));
 
