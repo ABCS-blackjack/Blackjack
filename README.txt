@@ -1,4 +1,4 @@
 # Blackjack Sim
-card_images is a folder that  has 52 individual cards and some cards backs we can modify if we wish. I was able to integrate them into android studio no problem if anyone wants to give it a shot.
+Play the game of blackjack while simultaneously reading data such as win/loss, current count, percent chance of dealer busting and player busting.
 
 https://docs.google.com/document/d/1C9m3YyatXmDNRQgmNCTjoRP1p-zopn-6J1u0ZpPRBvs/edit?usp=sharing
