@@ -5,16 +5,30 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+import java.util.ArrayList;
+
+@Entity
 @Parcel(Parcel.Serialization.BEAN)
 public class Dealer {
 
+    @Ignore
     private Deck theDeck;
+    @Ignore
     private Deck dealersHand;
+    @Ignore
     private Card dealerBottomCard;
+    @Ignore
     public boolean isWinner;
+    @PrimaryKey
+    public int dealerID = 0;
+    Double dealerBustChance;
 
     @ParcelConstructor
     Dealer() {
@@ -137,6 +151,4 @@ public class Dealer {
         }
         return chance;
     }
-
-
 }

@@ -18,6 +18,9 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class AnalyzeActivity extends AppCompatActivity {
 
     private TextView gamesText;
@@ -65,22 +68,36 @@ public class AnalyzeActivity extends AppCompatActivity {
         GraphView graph = findViewById(R.id.probabilityGraph);
         graph.setTitle("Probability");
         graph.setTitleTextSize(65);
-        int xValue = db.playerDao().getNumHits();
+
+        Double dealerBustChance = db.dealerDao().getDealerBustChance();
+        String bustChanceString = db.playerDao().getBustChanceString();
+        String bustChanceArray[] = bustChanceString.split(", ");
+        int xValue = bustChanceArray.length;
+        Double yValue = 0.0;
 
         LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
         LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
 
         for (int i = 1; i <= xValue; i++) {
-            series1.appendData(new DataPoint(i, i * 20), false, i, false);
-            series2.appendData(new DataPoint(i, i * 10), false, i, false);
+            String doubleString = bustChanceArray[i - 1];
+            if (i - 1 == 0) {
+                yValue = Double.parseDouble(doubleString.substring(1, doubleString.length() - 1));
+            } else if (i - 1 == xValue - 1) {
+                yValue = Double.parseDouble(doubleString.substring(0, doubleString.length() - 2));
+            } else {
+                yValue = Double.parseDouble(bustChanceArray[i - 1]);
+            }
+            series1.appendData(new DataPoint(i, yValue), false, i, false);
+            series2.appendData(new DataPoint(i, dealerBustChance), false, i, false);
         }
 
-        series1.setTitle("Bust %");     //fixme: incorporate player1.bustChance
+
+        series1.setTitle("Player Bust %");     //fixme: incorporate player1.bustChance
         series1.setColor(Color.RED);
         series1.setDrawDataPoints(true);
         series1.setDataPointsRadius(15);
 
-        series2.setTitle("21 %");       //fixme:incorporate dealer1.bustChance
+        series2.setTitle("Dealer Bust %");       //fixme:incorporate dealer1.bustChance
         series2.setColor(Color.BLACK);
         series2.setDrawDataPoints(true);
         series2.setDataPointsRadius(15);
@@ -102,7 +119,7 @@ public class AnalyzeActivity extends AppCompatActivity {
         view.setYAxisBoundsManual(true);
 
         LegendRenderer legend = graph.getLegendRenderer();
-        legend.setAlign(LegendRenderer.LegendAlign.TOP);
+        legend.setAlign(LegendRenderer.LegendAlign.BOTTOM);
         legend.setVisible(true);
 
         GridLabelRenderer label = graph.getGridLabelRenderer();

@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
@@ -28,6 +29,8 @@ public interface PlayerDao {
     int getNum21();
     @Query("SELECT numHits FROM Player")
     int getNumHits();
+    @Query("SELECT bustChanceString FROM Player")
+    String getBustChanceString();
     @Insert(onConflict = REPLACE)
     void insertPlayer(Player p);
     @Update(onConflict = REPLACE)

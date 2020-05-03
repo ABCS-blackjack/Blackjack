@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             player1.numBusts = db.playerDao().getNumBusts();
             player1.num21 = db.playerDao().getNum21();
         }
+        db.dealerDao().insertDealer(dealer1);
 
 
         //SET CARD FACES
@@ -218,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 dealer1.dealerHit(dealerCard0, currentCount);
                 dealerCount.setText(Integer.toString(dealer1.getDealerHandValue()));
                 dealer1.dealerHitBottom(dealerCard1);
+                dealer1.dealerBustChance = dealer1.bustChance();
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
                     player1.playerUpdateData();
@@ -475,7 +477,12 @@ public class MainActivity extends AppCompatActivity {
         analyzeActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (player1.bustChanceList.size() > 0) {
+                    player1.bustChanceString = player1.bustChanceList.toString();
+                }
+                //dealer1.dealerBustChance = dealer1.bustChance();
                 BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+                BlackjackDatabase.getDatabase(getApplicationContext()).dealerDao().updateDealer(dealer1);
                 Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
                 startActivity(nextPage);
             }
@@ -498,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
         player1.numTies = db.playerDao().getNumTies();
         player1.numBusts = db.playerDao().getNumBusts();
         player1.num21 = db.playerDao().getNum21();
-        player1.playerUpdateData();
+        //player1.playerUpdateData();
         db.playerDao().updatePlayer(player1);
 
         dealer1 = new Dealer(singleDeck);
@@ -760,7 +767,7 @@ public class MainActivity extends AppCompatActivity {
         player1.numLosses = 0;
         player1.numTies = 0;
         player1.numHits = 0;
-        player1.playerUpdateData();
+        //player1.playerUpdateData();
         db.playerDao().updatePlayer(player1);
         //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }

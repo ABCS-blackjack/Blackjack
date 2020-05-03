@@ -15,6 +15,8 @@ import androidx.room.Room;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 
+import java.util.ArrayList;
+
 @Entity
 @Parcel(Parcel.Serialization.BEAN)
 public class Player {
@@ -35,17 +37,24 @@ public class Player {
     public int numBusts = 0;
     public int num21 = 0;
     public int numHits;
+    @Ignore
+    public ArrayList<Double> bustChanceList;
+    public String bustChanceString;
 
     @ParcelConstructor
     Player() {
         theDeck = new Deck();
         playersHand = new Deck();
         numHits = 0;
+        bustChanceList = new ArrayList<>();
+        bustChanceString = "0.0";
     }
     Player(Deck theDeck) {
         this.theDeck = theDeck;
         playersHand = new Deck();
         numHits = 0;
+        bustChanceList = new ArrayList<>();
+        bustChanceString = "0.0";
     }
 
 
@@ -118,6 +127,7 @@ public class Player {
     }
 
     public void playerReset() {
+        bustChanceList = new ArrayList<>();
         numHits = 0;
         playersHand = new Deck();
     }
@@ -149,8 +159,8 @@ public class Player {
                 chance++;
             }
         }
-        chance = chance/theDeck.myDeck.size();
-        return chance*100;
+        chance = (chance/theDeck.myDeck.size())*100;
+        bustChanceList.add(chance);
+        return chance;
     }
-
 }
