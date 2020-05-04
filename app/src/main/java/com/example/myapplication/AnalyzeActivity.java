@@ -18,6 +18,9 @@ import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class AnalyzeActivity extends AppCompatActivity {
 
     private TextView gamesText;
@@ -37,12 +40,12 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
 
-        gamesText.setText("Hand Number: " + Integer.toString(db.playerDao().getNumGames()));
-        recordText.setText("Record (W-L-T): " + Integer.toString(db.playerDao().getNumWins()) +
-                "-" + Integer.toString(db.playerDao().getNumLosses()) +
-                "-" + Integer.toString(db.playerDao().getNumTies()));
-        bustText.setText("Times Busted: " + Integer.toString(db.playerDao().getNumBusts()));
-        num21Text.setText("Blackjacks: " + Integer.toString(db.playerDao().getNum21()));
+        gamesText.setText("Hand Number: " + Integer.toString(db.playerDataDao().getNumHands()));
+        recordText.setText("Record (W-L-T): " + Integer.toString(db.playerDataDao().getNumWins()) +
+                "-" + Integer.toString(db.playerDataDao().getNumLosses()) +
+                "-" + Integer.toString(db.playerDataDao().getNumTies()));
+        bustText.setText("Times Busted: " + Integer.toString(db.playerDataDao().getNumBusts()));
+        num21Text.setText("Blackjacks: " + Integer.toString(db.playerDataDao().getNum21()));
 
         ImageButton mainActivity = findViewById(R.id.imageHomeButton);
         ImageButton refresh = findViewById(R.id.refresh);
@@ -58,52 +61,71 @@ public class AnalyzeActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fixme: reset stats
+                BlackjackDatabase tempDB = BlackjackDatabase.getDatabase(getApplicationContext());
+                PlayerData pd = new PlayerData();
+                tempDB.playerDataDao().insertPlayerData(pd);
+                gamesText.setText("Hand Number: " + Integer.toString(tempDB.playerDataDao().getNumHands()));
+                recordText.setText("Record (W-L-T): " + Integer.toString(tempDB.playerDataDao().getNumWins()) +
+                        "-" + Integer.toString(tempDB.playerDataDao().getNumLosses()) +
+                        "-" + Integer.toString(tempDB.playerDataDao().getNumTies()));
+                bustText.setText("Times Busted: " + Integer.toString(tempDB.playerDataDao().getNumBusts()));
+                num21Text.setText("Blackjacks: " + Integer.toString(tempDB.playerDataDao().getNum21()));
             }
         });
 
         GraphView graph = findViewById(R.id.probabilityGraph);
         graph.setTitle("Probability");
         graph.setTitleTextSize(65);
-        int xValue = db.playerDao().getNumHits();
 
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
+        Double dealerBustChance = db.dealerDao().getDealerBustChance();
+        String bustChanceString = db.playerDao().getBustChanceString();
+        String[] bustChanceArray = bustChanceString.split(", ");
+        int xValue = bustChanceArray.length;
+        Double yValue = 0.0;
 
-        for (int i = 1; i <= xValue; i++) {
-            series1.appendData(new DataPoint(i, i * 20), false, i, false);
-            series2.appendData(new DataPoint(i, i * 10), false, i, false);
+        if (!bustChanceArray[0].equals("0.0")) {
+            LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
+            LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
+
+            for (int i = 1; i <= xValue; i++) {
+                String doubleString = bustChanceArray[i - 1];
+                if (i - 1 == 0) {
+                    yValue = Double.parseDouble(doubleString.substring(1, doubleString.length() - 1));
+                } else if (i - 1 == xValue - 1) {
+                    yValue = Double.parseDouble(doubleString.substring(0, doubleString.length() - 2));
+                } else {
+                    yValue = Double.parseDouble(bustChanceArray[i - 1]);
+                }
+                series1.appendData(new DataPoint(i, yValue), false, i, false);
+                series2.appendData(new DataPoint(i, dealerBustChance), false, i, false);
+            }
+
+            series1.setTitle("Player Bust %");
+            series1.setColor(Color.RED);
+            series1.setDrawDataPoints(true);
+            series1.setDataPointsRadius(15);
+
+            series2.setTitle("Dealer Bust %");
+            series2.setColor(Color.BLACK);
+            series2.setDrawDataPoints(true);
+            series2.setDataPointsRadius(15);
+
+            graph.addSeries(series1);
+            graph.addSeries(series2);
+
+            LegendRenderer legend = graph.getLegendRenderer();
+            legend.setAlign(LegendRenderer.LegendAlign.BOTTOM);
+            legend.setVisible(true);
         }
-
-        series1.setTitle("Bust %");     //fixme: incorporate player1.bustChance
-        series1.setColor(Color.RED);
-        series1.setDrawDataPoints(true);
-        series1.setDataPointsRadius(15);
-
-        series2.setTitle("21 %");       //fixme:incorporate dealer1.bustChance
-        series2.setColor(Color.BLACK);
-        series2.setDrawDataPoints(true);
-        series2.setDataPointsRadius(15);
-
-        graph.addSeries(series1);
-        graph.addSeries(series2);
 
         Viewport view = graph.getViewport();
-        if (xValue == 0) {
-            view.setMinX(0);
-        } else {
-            view.setMinX(1);
-        }
+        view.setMinX(1);
         view.setMaxX(xValue);
         view.setMinY(0);
         view.setMaxY(100);
 
         view.setXAxisBoundsManual(true);
         view.setYAxisBoundsManual(true);
-
-        LegendRenderer legend = graph.getLegendRenderer();
-        legend.setAlign(LegendRenderer.LegendAlign.TOP);
-        legend.setVisible(true);
 
         GridLabelRenderer label = graph.getGridLabelRenderer();
         label.setNumHorizontalLabels(xValue);
