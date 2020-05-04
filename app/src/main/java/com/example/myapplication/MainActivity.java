@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     //PLAYER AND DEALER OBJECT
     private Player player1;
+    private PlayerData pd1;
     private Dealer dealer1;
 
     //PARCELABLES
@@ -136,18 +137,20 @@ public class MainActivity extends AppCompatActivity {
         shoeCurrentCount = findViewById(R.id.shoeCount);
         shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));  //fixme:test
         player1 = new Player(singleDeck);
+        pd1 = new PlayerData();
         dealer1 = new Dealer(singleDeck);
 
         db = BlackjackDatabase.getDatabase(getApplicationContext());
         if (db.playerDao().playerCheck() == 0) {
             db.playerDao().insertPlayer(player1);
+            db.playerDataDao().insertPlayerData(pd1);
         } else {
-            player1.numGames = db.playerDao().getNumGames();
-            player1.numWins = db.playerDao().getNumWins();
-            player1.numLosses = db.playerDao().getNumLosses();
-            player1.numTies = db.playerDao().getNumTies();
-            player1.numBusts = db.playerDao().getNumBusts();
-            player1.num21 = db.playerDao().getNum21();
+            pd1.numHands = db.playerDataDao().getNumHands();
+            pd1.numWins = db.playerDataDao().getNumWins();
+            pd1.numLosses = db.playerDataDao().getNumLosses();
+            pd1.numTies = db.playerDataDao().getNumTies();
+            pd1.numBusts = db.playerDataDao().getNumBusts();
+            pd1.num21 = db.playerDataDao().getNum21();
         }
         db.dealerDao().insertDealer(dealer1);
 
@@ -222,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 dealer1.dealerBustChance = dealer1.bustChance();
 
                 if (dealer1.dealerHas21() || player1.playerHas21()) {
-                    player1.playerUpdateData();
+                    pd1.playerUpdateData(player1);
                     endHand();
                 }else {
                     bustChance.setText(String.format("%.2f",player1.bustChance()));
@@ -312,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                 if (player1.isPlayerBust()) {
                     dCard1 = dealer1.getDealerBottomCard().getDrawable();
                     dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
-                    player1.playerUpdateData();
+                    pd1.playerUpdateData(player1);
                     endHand();
                 }else {
 
@@ -363,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                player1.playerUpdateData();
+                pd1.playerUpdateData(player1);
 
                 hitButton.setVisibility(View.GONE);
                 standButton.setVisibility(View.GONE);
@@ -480,8 +483,8 @@ public class MainActivity extends AppCompatActivity {
                 if (player1.bustChanceList.size() > 0) {
                     player1.bustChanceString = player1.bustChanceList.toString();
                 }
-                //dealer1.dealerBustChance = dealer1.bustChance();
                 BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
+                BlackjackDatabase.getDatabase(getApplicationContext()).playerDataDao().updatePlayerData(pd1);
                 BlackjackDatabase.getDatabase(getApplicationContext()).dealerDao().updateDealer(dealer1);
                 Intent nextPage = new Intent(MainActivity.this, AnalyzeActivity.class);
                 startActivity(nextPage);
@@ -499,13 +502,6 @@ public class MainActivity extends AppCompatActivity {
         shoeCurrentCount.setText("Cards left: " + Integer.toString(singleDeck.myDeck.size()));
 
         player1 = new Player(singleDeck);
-        player1.numGames = db.playerDao().getNumGames();
-        player1.numWins = db.playerDao().getNumWins();
-        player1.numLosses = db.playerDao().getNumLosses();
-        player1.numTies = db.playerDao().getNumTies();
-        player1.numBusts = db.playerDao().getNumBusts();
-        player1.num21 = db.playerDao().getNum21();
-        //player1.playerUpdateData();
         db.playerDao().updatePlayer(player1);
 
         dealer1 = new Dealer(singleDeck);
@@ -547,34 +543,32 @@ public class MainActivity extends AppCompatActivity {
         if(player1.getPlayerHandValue() > 21) {
             popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
             loss++;
-            player1.numLosses++;
+            pd1.numLosses++;
 
         }
         else if (dealer1.getDealerHandValue() > 21) {
             popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
             win++;
-            player1.numWins++;
+            pd1.numWins++;
 
         }
         else if (player1.getPlayerHandValue() == dealer1.getDealerHandValue()) {
             popUp.make(myPopUp, "Tie", Snackbar.LENGTH_SHORT).show();
-            player1.numTies++;
+            pd1.numTies++;
 
         }
         else {
             if (player1.getPlayerHandValue() > dealer1.getDealerHandValue()) {
                 popUp.make(myPopUp, "You're the Winner", Snackbar.LENGTH_SHORT).show();
                 win++;
-                player1.numWins++;
+                pd1.numWins++;
             } else {
                 popUp.make(myPopUp, "Dealer is the Winner", Snackbar.LENGTH_SHORT).show();
                 loss++;
-                player1.numLosses++;
+                pd1.numLosses++;
             }
 
         }
-
-        //BlackjackDatabase.getDatabase(getApplicationContext()).playerDao().updatePlayer(player1);
 
         dealerCard1.setImageResource(dealer1.getDealerBottomCard().getDrawable());
         if (dealer1.getDealerBottomCard().getValue() <= 6 && dealer1.getDealerBottomCard().getValue() >= 2) {
@@ -744,6 +738,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        pd1.numHands = db.playerDataDao().getNumHands();
+        pd1.numWins = db.playerDataDao().getNumWins();
+        pd1.numLosses = db.playerDataDao().getNumLosses();
+        pd1.numTies = db.playerDataDao().getNumTies();
+        pd1.numBusts = db.playerDataDao().getNumBusts();
+        pd1.num21 = db.playerDataDao().getNum21();
         //Toast.makeText(this, "resuming state", Toast.LENGTH_SHORT).show();
     }
     @Override
@@ -760,15 +760,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        player1.num21 = 0;
-        player1.numBusts = 0;
-        player1.numGames = 0;
-        player1.numWins = 0;
-        player1.numLosses = 0;
-        player1.numTies = 0;
-        player1.numHits = 0;
-        //player1.playerUpdateData();
-        db.playerDao().updatePlayer(player1);
+        pd1.num21 = 0;
+        pd1.numBusts = 0;
+        pd1.numHands = 0;
+        pd1.numWins = 0;
+        pd1.numLosses = 0;
+        pd1.numTies = 0;
+        db.playerDataDao().updatePlayerData(pd1);
         //Toast.makeText(this, "on stop", Toast.LENGTH_SHORT).show();
     }
 }

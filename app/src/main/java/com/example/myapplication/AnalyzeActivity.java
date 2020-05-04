@@ -40,12 +40,12 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         BlackjackDatabase db = BlackjackDatabase.getDatabase(getApplicationContext());
 
-        gamesText.setText("Hand Number: " + Integer.toString(db.playerDao().getNumGames()));
-        recordText.setText("Record (W-L-T): " + Integer.toString(db.playerDao().getNumWins()) +
-                "-" + Integer.toString(db.playerDao().getNumLosses()) +
-                "-" + Integer.toString(db.playerDao().getNumTies()));
-        bustText.setText("Times Busted: " + Integer.toString(db.playerDao().getNumBusts()));
-        num21Text.setText("Blackjacks: " + Integer.toString(db.playerDao().getNum21()));
+        gamesText.setText("Hand Number: " + Integer.toString(db.playerDataDao().getNumHands()));
+        recordText.setText("Record (W-L-T): " + Integer.toString(db.playerDataDao().getNumWins()) +
+                "-" + Integer.toString(db.playerDataDao().getNumLosses()) +
+                "-" + Integer.toString(db.playerDataDao().getNumTies()));
+        bustText.setText("Times Busted: " + Integer.toString(db.playerDataDao().getNumBusts()));
+        num21Text.setText("Blackjacks: " + Integer.toString(db.playerDataDao().getNum21()));
 
         ImageButton mainActivity = findViewById(R.id.imageHomeButton);
         ImageButton refresh = findViewById(R.id.refresh);
@@ -62,15 +62,14 @@ public class AnalyzeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BlackjackDatabase tempDB = BlackjackDatabase.getDatabase(getApplicationContext());
-                Player player = new Player();
-                player.bustChanceString = tempDB.playerDao().getBustChanceString();
-                tempDB.playerDao().insertPlayer(player);
-                gamesText.setText("Hand Number: " + Integer.toString(tempDB.playerDao().getNumGames()));
-                recordText.setText("Record (W-L-T): " + Integer.toString(tempDB.playerDao().getNumWins()) +
-                        "-" + Integer.toString(tempDB.playerDao().getNumLosses()) +
-                        "-" + Integer.toString(tempDB.playerDao().getNumTies()));
-                bustText.setText("Times Busted: " + Integer.toString(tempDB.playerDao().getNumBusts()));
-                num21Text.setText("Blackjacks: " + Integer.toString(tempDB.playerDao().getNum21()));
+                PlayerData pd = new PlayerData();
+                tempDB.playerDataDao().insertPlayerData(pd);
+                gamesText.setText("Hand Number: " + Integer.toString(tempDB.playerDataDao().getNumHands()));
+                recordText.setText("Record (W-L-T): " + Integer.toString(tempDB.playerDataDao().getNumWins()) +
+                        "-" + Integer.toString(tempDB.playerDataDao().getNumLosses()) +
+                        "-" + Integer.toString(tempDB.playerDataDao().getNumTies()));
+                bustText.setText("Times Busted: " + Integer.toString(tempDB.playerDataDao().getNumBusts()));
+                num21Text.setText("Blackjacks: " + Integer.toString(tempDB.playerDataDao().getNum21()));
             }
         });
 

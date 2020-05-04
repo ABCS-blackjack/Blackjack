@@ -27,16 +27,8 @@ public class Player {
     public Deck theDeck;
     @Ignore
     public boolean isWinner;
-
     @PrimaryKey
-    public int playerID = 0;
-    public int numGames = 0;
-    public int numWins = 0;
-    public int numLosses = 0;
-    public int numTies = 0;
-    public int numBusts = 0;
-    public int num21 = 0;
-    public int numHits;
+    public int playerID;
     @Ignore
     public ArrayList<Double> bustChanceList;
     public String bustChanceString;
@@ -45,14 +37,14 @@ public class Player {
     Player() {
         theDeck = new Deck();
         playersHand = new Deck();
-        numHits = 0;
+        playerID = 0;
         bustChanceList = new ArrayList<>();
         bustChanceString = "0.0";
     }
     Player(Deck theDeck) {
         this.theDeck = theDeck;
         playersHand = new Deck();
-        numHits = 0;
+        playerID = 0;
         bustChanceList = new ArrayList<>();
         bustChanceString = "0.0";
     }
@@ -60,7 +52,6 @@ public class Player {
 
 
     public void playerHit(ImageView v, AnalyzeCount count) {
-        numHits++;
         if (theDeck.myDeck.get(0).getValue() <= 6 && theDeck.myDeck.get(0).getValue() >= 2) {
             count.add();
         }else if (theDeck.myDeck.get(0).getValue() >= 10 || theDeck.myDeck.get(0).getValue() == 1) {
@@ -128,14 +119,7 @@ public class Player {
 
     public void playerReset() {
         bustChanceList = new ArrayList<>();
-        numHits = 0;
         playersHand = new Deck();
-    }
-
-    public void playerUpdateData() {
-        numGames++;
-        if (isPlayerBust()) numBusts++;
-        if (getPlayerHandValue() == 21) num21++;
     }
 
     public boolean playerHas21() {

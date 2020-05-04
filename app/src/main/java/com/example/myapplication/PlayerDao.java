@@ -15,20 +15,6 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 public interface PlayerDao {
     @Query("SELECT count(playerID) FROM Player")
     int playerCheck();
-    @Query("SELECT numGames FROM Player")
-    int getNumGames();
-    @Query("SELECT numWins FROM Player")
-    int getNumWins();
-    @Query("SELECT numLosses FROM Player")
-    int getNumLosses();
-    @Query("SELECT numTies FROM Player")
-    int getNumTies();
-    @Query("SELECT numBusts FROM Player")
-    int getNumBusts();
-    @Query("SELECT num21 FROM Player")
-    int getNum21();
-    @Query("SELECT numHits FROM Player")
-    int getNumHits();
     @Query("SELECT bustChanceString FROM Player")
     String getBustChanceString();
     @Insert(onConflict = REPLACE)
