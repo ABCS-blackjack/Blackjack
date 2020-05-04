@@ -71,39 +71,39 @@ public class AnalyzeActivity extends AppCompatActivity {
 
         Double dealerBustChance = db.dealerDao().getDealerBustChance();
         String bustChanceString = db.playerDao().getBustChanceString();
-        String bustChanceArray[] = bustChanceString.split(", ");
+        String[] bustChanceArray = bustChanceString.split(", ");
         int xValue = bustChanceArray.length;
         Double yValue = 0.0;
 
-        LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
+        if (!bustChanceArray[0].equals("0.0")) {
+            LineGraphSeries<DataPoint> series1 = new LineGraphSeries<>(new DataPoint[]{});
+            LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{});
 
-        for (int i = 1; i <= xValue; i++) {
-            String doubleString = bustChanceArray[i - 1];
-            if (i - 1 == 0) {
-                yValue = Double.parseDouble(doubleString.substring(1, doubleString.length() - 1));
-            } else if (i - 1 == xValue - 1) {
-                yValue = Double.parseDouble(doubleString.substring(0, doubleString.length() - 2));
-            } else {
-                yValue = Double.parseDouble(bustChanceArray[i - 1]);
+            for (int i = 1; i <= xValue; i++) {
+                String doubleString = bustChanceArray[i - 1];
+                if (i - 1 == 0) {
+                    yValue = Double.parseDouble(doubleString.substring(1, doubleString.length() - 1));
+                } else if (i - 1 == xValue - 1) {
+                    yValue = Double.parseDouble(doubleString.substring(0, doubleString.length() - 2));
+                } else {
+                    yValue = Double.parseDouble(bustChanceArray[i - 1]);
+                }
+                series1.appendData(new DataPoint(i, yValue), false, i, false);
+                series2.appendData(new DataPoint(i, dealerBustChance), false, i, false);
             }
-            series1.appendData(new DataPoint(i, yValue), false, i, false);
-            series2.appendData(new DataPoint(i, dealerBustChance), false, i, false);
+
+            series1.setTitle("Player Bust %");
+            series1.setColor(Color.RED);
+            series1.setDrawDataPoints(true);
+            series1.setDataPointsRadius(15);
+
+            series2.setTitle("Dealer Bust %");
+            series2.setColor(Color.BLACK);
+            series2.setThickness(10);
+
+            graph.addSeries(series1);
+            graph.addSeries(series2);
         }
-
-
-        series1.setTitle("Player Bust %");     //fixme: incorporate player1.bustChance
-        series1.setColor(Color.RED);
-        series1.setDrawDataPoints(true);
-        series1.setDataPointsRadius(15);
-
-        series2.setTitle("Dealer Bust %");       //fixme:incorporate dealer1.bustChance
-        series2.setColor(Color.BLACK);
-        series2.setDrawDataPoints(true);
-        series2.setDataPointsRadius(15);
-
-        graph.addSeries(series1);
-        graph.addSeries(series2);
 
         Viewport view = graph.getViewport();
         if (xValue == 0) {
