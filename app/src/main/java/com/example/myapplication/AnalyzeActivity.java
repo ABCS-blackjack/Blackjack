@@ -61,7 +61,16 @@ public class AnalyzeActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fixme: reset stats
+                BlackjackDatabase tempDB = BlackjackDatabase.getDatabase(getApplicationContext());
+                Player player = new Player();
+                player.bustChanceString = tempDB.playerDao().getBustChanceString();
+                tempDB.playerDao().insertPlayer(player);
+                gamesText.setText("Hand Number: " + Integer.toString(tempDB.playerDao().getNumGames()));
+                recordText.setText("Record (W-L-T): " + Integer.toString(tempDB.playerDao().getNumWins()) +
+                        "-" + Integer.toString(tempDB.playerDao().getNumLosses()) +
+                        "-" + Integer.toString(tempDB.playerDao().getNumTies()));
+                bustText.setText("Times Busted: " + Integer.toString(tempDB.playerDao().getNumBusts()));
+                num21Text.setText("Blackjacks: " + Integer.toString(tempDB.playerDao().getNum21()));
             }
         });
 
@@ -99,28 +108,25 @@ public class AnalyzeActivity extends AppCompatActivity {
 
             series2.setTitle("Dealer Bust %");
             series2.setColor(Color.BLACK);
-            series2.setThickness(10);
+            series2.setDrawDataPoints(true);
+            series2.setDataPointsRadius(15);
 
             graph.addSeries(series1);
             graph.addSeries(series2);
+
+            LegendRenderer legend = graph.getLegendRenderer();
+            legend.setAlign(LegendRenderer.LegendAlign.BOTTOM);
+            legend.setVisible(true);
         }
 
         Viewport view = graph.getViewport();
-        if (xValue == 0) {
-            view.setMinX(0);
-        } else {
-            view.setMinX(1);
-        }
+        view.setMinX(1);
         view.setMaxX(xValue);
         view.setMinY(0);
         view.setMaxY(100);
 
         view.setXAxisBoundsManual(true);
         view.setYAxisBoundsManual(true);
-
-        LegendRenderer legend = graph.getLegendRenderer();
-        legend.setAlign(LegendRenderer.LegendAlign.BOTTOM);
-        legend.setVisible(true);
 
         GridLabelRenderer label = graph.getGridLabelRenderer();
         label.setNumHorizontalLabels(xValue);
